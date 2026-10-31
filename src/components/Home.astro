@@ -1,0 +1,251 @@
+---
+import { Image } from 'astro:assets';
+import { SITE, ROUTES, type Lang } from '../config';
+import { t } from '../i18n';
+import Base from '../layouts/Base.astro';
+
+import pont from '../assets/vieux-pont-bergerac.jpg';
+import clotilde from '../assets/clotilde.jpg';
+import salon from '../assets/salon.jpg';
+import chambre from '../assets/chambre.jpg';
+import sde1 from '../assets/salle-d-eau-1.jpg';
+import sde2 from '../assets/salle-d-eau-2.jpg';
+import jardin from '../assets/jardin.jpg';
+import velos from '../assets/velos.jpg';
+import fresque from '../assets/fresque-bergerac.jpg';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = t(lang);
+const contactHref = ROUTES.contact[lang];
+const pageUrl = new URL(ROUTES.home[lang], SITE.url).href;
+const price = new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-GB', {
+  style: 'currency',
+  currency: 'EUR',
+  maximumFractionDigits: 0,
+}).format(SITE.priceWeek);
+
+const gallery = [
+  { src: salon, alt: d.house.photos.salon, cap: d.house.captions.salon, cls: 'g-tall' },
+  { src: chambre, alt: d.house.photos.chambre, cap: d.house.captions.chambre, cls: 'g-wide' },
+  { src: jardin, alt: d.house.photos.jardin, cap: d.house.captions.jardin, cls: '' },
+  { src: sde2, alt: d.house.photos.sde2, cap: d.house.captions.sde2, cls: '' },
+  { src: velos, alt: d.house.photos.velos, cap: d.house.captions.velos, cls: 'g-wide' },
+  { src: sde1, alt: d.house.photos.sde1, cap: d.house.captions.sde1, cls: '' },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': ['LocalBusiness', 'EducationalOrganization'],
+    '@id': `${SITE.url}/#organisation`,
+    name: SITE.name,
+    url: pageUrl,
+    description: d.meta.homeDescription,
+    image: new URL('/og-image.jpg', SITE.url).href,
+    telephone: SITE.phoneIntl,
+    email: SITE.email,
+    priceRange: '€€',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: SITE.street,
+      postalCode: SITE.postalCode,
+      addressLocality: SITE.city,
+      addressRegion: SITE.region,
+      addressCountry: 'FR',
+    },
+    areaServed: 'Bergerac, Dordogne',
+    availableLanguage: ['French', 'English'],
+    founder: { '@type': 'Person', name: SITE.teacher, jobTitle: lang === 'fr' ? 'Professeure de français (FLE)' : 'French teacher (FLE)' },
+    makesOffer: {
+      '@type': 'Offer',
+      name: d.stay.title,
+      description: d.stay.includes.join(', '),
+      price: SITE.priceWeek,
+      priceCurrency: 'EUR',
+      url: pageUrl + '#sejour',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: pageUrl,
+    inLanguage: lang,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: lang,
+    mainEntity: d.faq.items.map(([q, a]) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  },
+];
+---
+
+<Base lang={lang} route="home" title={d.meta.homeTitle} description={d.meta.homeDescription} jsonLd={jsonLd}>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-text">
+        <p class="kicker rise" style="--i:0">{d.hero.kicker}</p>
+        <h1 class="rise" style="--i:1">{d.hero.title}</h1>
+        <p class="lead rise" style="--i:2">{d.hero.lead}</p>
+        <div class="hero-ctas rise" style="--i:3">
+          <a class="btn" href={contactHref}>{d.hero.cta}</a>
+          <a class="btn btn-ghost" href="#sejour">{d.hero.ctaSecondary}</a>
+        </div>
+        <dl class="facts rise" style="--i:4">
+          {d.hero.facts.map(([n, l]) => (
+            <div><dt>{n}</dt><dd>{l}</dd></div>
+          ))}
+        </dl>
+      </div>
+      <figure class="hero-photo arch rise" style="--i:2">
+        <Image
+          src={pont}
+          alt={d.hero.photoAlt}
+          widths={[400, 600, 868]}
+          sizes="(min-width: 900px) 42vw, 90vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- INTRO + JOURNÉE TYPE -->
+  <section class="section intro" aria-labelledby="intro-title">
+    <div class="wrap intro-grid">
+      <div class="prose">
+        <h2 id="intro-title">{d.intro.title}</h2>
+        <p class="dropcap">{d.intro.p1}</p>
+        <p>{d.intro.p2}</p>
+      </div>
+      <div class="day">
+        <h3>{d.day.title}</h3>
+        <ol class="timeline">
+          {d.day.items.map(([when, what]) => (
+            <li><strong>{when}</strong><span>{what}</span></li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- SÉJOUR + PRIX -->
+  <section class="section stay" id="sejour" aria-labelledby="stay-title">
+    <div class="wrap stay-card">
+      <div>
+        <h2 id="stay-title">{d.stay.title}</h2>
+        <p class="muted">{d.stay.intro}</p>
+        <ul class="checklist">
+          {d.stay.includes.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div class="price">
+        <p class="price-label">{d.stay.priceLabel}</p>
+        <p class="price-amount">{price}</p>
+        <p class="price-per">{d.stay.pricePer}</p>
+        <p class="price-note">{d.stay.priceNote}</p>
+        <a class="btn btn-light" href={contactHref}>{d.stay.cta}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFESSEURE -->
+  <section class="section teacher" id="professeure" aria-labelledby="teacher-title">
+    <div class="wrap teacher-grid">
+      <figure class="teacher-photo arch">
+        <Image src={clotilde} alt={d.teacher.photoAlt} widths={[360, 540, 720]} sizes="(min-width: 900px) 34vw, 80vw" />
+      </figure>
+      <div class="prose">
+        <p class="kicker">{d.teacher.kicker}</p>
+        <h2 id="teacher-title">{d.teacher.title}</h2>
+        <ul class="badges">{d.teacher.badges.map((b) => <li>{b}</li>)}</ul>
+        <p>{d.teacher.p1}</p>
+        <p>{d.teacher.p2}</p>
+        <p>{d.teacher.p3}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAISON -->
+  <section class="section house" id="maison" aria-labelledby="house-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="house-title">{d.house.title}</h2>
+        <p class="lead">{d.house.lead}</p>
+      </div>
+      <ul class="gallery">
+        {gallery.map((g) => (
+          <li class={g.cls}>
+            <figure>
+              <Image src={g.src} alt={g.alt} widths={[320, 480, 720]} sizes="(min-width: 900px) 30vw, 50vw" />
+              <figcaption>{g.cap}</figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- RÉGION -->
+  <section class="section region" aria-labelledby="region-title">
+    <div class="wrap region-grid">
+      <div class="prose">
+        <h2 id="region-title">{d.region.title}</h2>
+        <p>{d.region.p1}</p>
+        <p>{d.region.p2}</p>
+      </div>
+      <figure class="region-photo">
+        <Image src={fresque} alt={d.region.photoAlt} widths={[360, 540, 707]} sizes="(min-width: 900px) 40vw, 90vw" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- AVIS -->
+  <section class="section reviews" id="avis" aria-labelledby="reviews-title">
+    <div class="wrap">
+      <h2 id="reviews-title" class="center">{d.reviews.title}</h2>
+      <div class="review-grid">
+        {d.reviews.items.map((r) => (
+          <figure class="review">
+            <p class="stars" aria-label="5/5">★★★★★</p>
+            <blockquote><p>{r.text}</p></blockquote>
+            <figcaption><strong>{r.name}</strong> · {r.from}</figcaption>
+          </figure>
+        ))}
+      </div>
+      {d.reviews.note && <p class="center small muted">{d.reviews.note}</p>}
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section faq" aria-labelledby="faq-title">
+    <div class="wrap narrow">
+      <h2 id="faq-title">{d.faq.title}</h2>
+      {d.faq.items.map(([q, a]) => (
+        <details>
+          <summary>{q}</summary>
+          <p>{a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta">
+    <div class="wrap narrow center">
+      <h2>{d.cta.title}</h2>
+      <p class="lead">{d.cta.text}</p>
+      <a class="btn" href={contactHref}>{d.cta.button}</a>
+    </div>
+  </section>
+</Base>

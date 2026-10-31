@@ -1,0 +1,7 @@
+---
+import Message from '../components/Message.astro';
+import { t } from '../i18n';
+const d = t('fr');
+---
+
+<Message lang="fr" title={d.meta.thanksTitle} heading={d.thanks.title} text={d.thanks.text} back={d.thanks.back} />

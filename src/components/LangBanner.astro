@@ -1,0 +1,40 @@
+---
+// Propose l'autre langue aux visiteurs dont le navigateur ne correspond pas à la page.
+// Aucune redirection automatique : Google doit pouvoir explorer chaque version librement.
+import { ROUTES, type Lang, type RouteKey } from '../config';
+import { t } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  route: RouteKey;
+}
+
+const { lang, route } = Astro.props;
+const d = t(lang);
+const other: Lang = lang === 'fr' ? 'en' : 'fr';
+---
+
+<div class="lang-banner" id="lang-banner" data-page-lang={lang} hidden>
+  <p lang={other}>
+    {d.langBanner.text} <a href={ROUTES[route][other]} hreflang={other}>{d.langBanner.link} →</a>
+  </p>
+  <button type="button" aria-label={d.langBanner.close}>×</button>
+</div>
+
+<script is:inline>
+  (function () {
+    var b = document.getElementById('lang-banner');
+    if (!b) return;
+    var pageLang = b.getAttribute('data-page-lang');
+    var nav = (navigator.language || '').slice(0, 2).toLowerCase();
+    var dismissed = false;
+    try { dismissed = localStorage.getItem('fib-lang-dismissed') === '1'; } catch (e) {}
+    var mismatch = pageLang === 'fr' ? nav !== 'fr' : nav === 'fr';
+    if (!mismatch || dismissed) return;
+    b.hidden = false;
+    b.querySelector('button').addEventListener('click', function () {
+      b.hidden = true;
+      try { localStorage.setItem('fib-lang-dismissed', '1'); } catch (e) {}
+    });
+  })();
+</script>

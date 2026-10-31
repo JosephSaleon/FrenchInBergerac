@@ -1,0 +1,25 @@
+---
+// Page simple (remerciement, 404) : non indexée, sans balises hreflang.
+import { ROUTES, type Lang } from '../config';
+import Base from '../layouts/Base.astro';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  heading: string;
+  text: string;
+  back: string;
+}
+
+const { lang, title, heading, text, back } = Astro.props;
+---
+
+<Base lang={lang} title={title} noindex>
+  <section class="section message">
+    <div class="wrap narrow center">
+      <h1>{heading}</h1>
+      <p class="lead">{text}</p>
+      <a class="btn" href={ROUTES.home[lang]}>{back}</a>
+    </div>
+  </section>
+</Base>

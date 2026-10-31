@@ -1,0 +1,31 @@
+---
+import { SITE, ROUTES, type Lang } from '../config';
+import { t } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = t(lang);
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div>
+      <p class="footer-brand">French <em>in</em> Bergerac</p>
+      <p class="footer-tagline">{d.footer.tagline}</p>
+    </div>
+    <address>
+      {SITE.street}<br />
+      {SITE.postalCode} {SITE.city}, France<br />
+      <a href={`tel:${SITE.phoneIntl}`}>{SITE.phoneDisplay}</a><br />
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    </address>
+    <nav aria-label={lang === 'fr' ? 'Langues' : 'Languages'} class="footer-langs">
+      <a href={ROUTES.home.fr} hreflang="fr" lang="fr" aria-current={lang === 'fr' ? 'true' : undefined}>Français</a>
+      <a href={ROUTES.home.en} hreflang="en" lang="en" aria-current={lang === 'en' ? 'true' : undefined}>English</a>
+    </nav>
+  </div>
+  <p class="wrap footer-legal">© {new Date().getFullYear()} {SITE.name}</p>
+</footer>

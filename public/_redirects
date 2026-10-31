@@ -1,0 +1,5 @@
+# Utilisé uniquement si le site est un jour hébergé sur Cloudflare Pages ou Netlify (ignoré par Hostinger)
+/sjours-linguistiques-immersifs--bergerac-pour-apprendre-le-franais-efficacement / 301
+/sjours-linguistiques--bergerac--immersion-dans-la-culture-franaise / 301
+/accueil / 301
+/sitemap.xml /sitemap-index.xml 301

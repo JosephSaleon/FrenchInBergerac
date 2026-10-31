@@ -1,0 +1,47 @@
+---
+import { ROUTES, type Lang, type RouteKey } from '../config';
+import { t } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  route?: RouteKey;
+}
+
+const { lang, route } = Astro.props;
+const d = t(lang);
+const other: Lang = lang === 'fr' ? 'en' : 'fr';
+const home = ROUTES.home[lang];
+const anchor = (id: string) => (home === '/' ? `/#${id}` : `${home}#${id}`);
+const links = [
+  { href: anchor('sejour'), label: d.nav.stay },
+  { href: anchor('maison'), label: d.nav.house },
+  { href: anchor('professeure'), label: d.nav.teacher },
+  { href: anchor('avis'), label: d.nav.reviews },
+];
+const otherHref = ROUTES[route ?? 'home'][other];
+---
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href={home} aria-label="French in Bergerac">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M4 34V22a16 16 0 0 1 32 0v12" fill="none" stroke="currentColor" stroke-width="3" />
+        <path d="M12 34V24a8 8 0 0 1 16 0v10" fill="none" stroke="currentColor" stroke-width="3" />
+        <path d="M1 36h38" stroke="currentColor" stroke-width="3" />
+      </svg>
+      <span class="brand-text">French <em>in</em> Bergerac</span>
+    </a>
+    <nav aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'}>
+      <ul class="nav-links">
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="lang-switch" href={otherHref} hreflang={other} lang={other}>
+        <span aria-hidden="true">{other.toUpperCase()}</span>
+        <span class="sr-only">{d.otherLangLabel}</span>
+      </a>
+      <a class="btn btn-small" href={ROUTES.contact[lang]}>{d.nav.contact}</a>
+    </div>
+  </div>
+</header>
