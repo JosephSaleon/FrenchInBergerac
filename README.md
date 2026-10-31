@@ -1,48 +1,33 @@
 # French in Bergerac – site bilingue FR/EN
 
-Site statique généré avec [Astro](https://astro.build) : zéro framework côté client, HTML pur, images WebP responsives, polices auto-hébergées. Lighthouse mobile : Performance 99–100, SEO 100, Accessibilité 100, Bonnes pratiques 100.
+Site statique généré avec [Astro](https://astro.build) et hébergé sur **Netlify**. Il n'y a aucun framework côté client : HTML pur, images WebP responsives, polices auto-hébergées.
+Lighthouse mobile : Performance 99–100, SEO 100, Accessibilité 100, Bonnes pratiques 100.
 
 ## Commandes
 
 ```bash
 npm install
-npm run dev       # développement : http://localhost:4321
-npm run build     # génère le site final dans dist/
-npm run preview   # prévisualise dist/
-npm run build:preview   # version d'APERÇU pour la cliente, dans dist-preview/ (noindex partout)
+npm run dev             # développement : http://localhost:4321
+npm run build           # site final dans dist/
+npm run preview         # sert dist/ en local (ne jamais ouvrir les .html par double-clic : le CSS ne charge pas)
+npm run build:preview   # version non indexable dans dist-preview/
 ```
-
-> ⚠️ `dist-preview/` ne doit **jamais** être déposé sur frenchinbergerac.net : toutes ses pages sont en `noindex`. Pour Hostinger, c'est toujours `dist/` (ou `french-in-bergerac-dist.zip`).
-
-## Faire valider la cliente
-1. `npm run build:preview`
-2. Va sur [app.netlify.com/drop](https://app.netlify.com/drop) (compte gratuit) et glisse le dossier `dist-preview/`. Netlify donne une adresse du type `https://xxx.netlify.app`. On peut la renommer, par exemple `french-in-bergerac-apercu.netlify.app`.
-3. Envoie le lien à la cliente : elle navigue sur tout le site, en FR et en EN. Le formulaire ne fonctionnera qu'une fois la clé Web3Forms ajoutée.
-4. Une fois le site validé, supprime le site Netlify.
-
-## Mots-clés ciblés
-Ils viennent de l'autocomplétion Google (UK et US pour l'anglais, France pour le français), c'est-à-dire de ce que les gens tapent réellement.
-
-| Langue | Expressions visées | Où |
-|---|---|---|
-| EN (cible principale) | *french immersion homestay*, *french immersion for adults / in france for adults / older adults*, *live and learn at your teacher's home*, *french language holiday(s) for adults*, *one week french immersion*, *learn french in france*, *french lessons dordogne / bergerac* | title, description, H1, H2, FAQ |
-| FR | *séjours linguistiques immersifs Bergerac* (existant, conservé), *cours de français pour étrangers*, *FLE*, *apprendre le français en immersion*, *cours de français Bergerac* | title, description, H1, H2, FAQ |
-
-En français, « séjour linguistique adulte » est surtout tapé par des Français qui partent à l'étranger. C'est pour ça que la version FR vise aussi « cours de français (FLE) » et « pour étrangers ».
 
 ## Organisation
 
 | Fichier | Rôle |
 |---|---|
 | `src/i18n.ts` | **Tous les textes FR et EN.** C'est ici qu'on modifie un texte ou un prix affiché. |
-| `src/config.ts` | Coordonnées, prix (données structurées), clé du formulaire, correspondance des URLs FR/EN |
+| `src/config.ts` | Coordonnées, prix (données structurées), correspondance des URLs FR/EN |
 | `src/components/Home.astro` | Structure de la page d'accueil et données structurées (JSON-LD) |
-| `src/components/Contact.astro` | Page contact et formulaire |
+| `src/components/Contact.astro` | Page contact et formulaire (Netlify Forms) |
 | `src/styles/global.css` | Design (couleurs en variables en haut du fichier) |
 | `src/assets/` | Photos sources (redimensionnées et converties automatiquement au build) |
-| `public/.htaccess` | Redirections 301 et URLs propres pour Hostinger (Apache/LiteSpeed) |
-| `public/_redirects` | Mêmes redirections, si un jour le site part sur Cloudflare Pages ou Netlify |
-| `tools/check-deploy.sh` | Vérifie les URLs et redirections une fois en ligne |
+| `astro.config.mjs` | Configuration, dont la **règle d'indexation automatique** (voir plus bas) |
+| `netlify.toml` | Build Netlify et en-têtes de cache |
+| `public/_redirects` | Redirections 301 sur Netlify |
+| `public/.htaccess` | Mêmes redirections pour Apache (inutile sur Netlify, gardé en solution de repli) |
+| `tools/check-deploy.sh` | Vérifie les URLs, les redirections et l'indexation une fois en ligne |
 | `tools/make-icons.mjs` | Régénère l'image de partage `og-image.jpg` et les icônes |
 
 ## URLs
@@ -56,69 +41,79 @@ En français, « séjour linguistique adulte » est surtout tapé par des Franç
 | `/merci`, `/en/thank-you` | Confirmation du formulaire | non indexées |
 | 2 anciennes pages « blog » Hostinger | – | redirection 301 vers `/` |
 
+## Indexation automatique (garde-fou SEO)
+Le site n'est indexable **que lorsqu'il est servi sur frenchinbergerac.net**. Concrètement :
+
+| Build | Indexable ? |
+|---|---|
+| Netlify, adresse `xxx.netlify.app` | non (noindex sur toutes les pages) |
+| Netlify, aperçu de branche ou de PR | non |
+| Netlify, domaine principal = frenchinbergerac.net | **oui** |
+| `npm run build` en local | oui |
+| `npm run build:preview` | non |
+
+Ainsi, l'adresse `.netlify.app` montrée à la cliente ne fait pas de concurrence à l'ancien site dans Google. Le jour où le domaine est branché, il suffit de **relancer un déploiement** pour que le site devienne indexable.
+
+> ⚠️ Ne pas glisser un `dist/` construit en local sur Netlify Drop : il serait indexable sur l'adresse `.netlify.app`. Utilise Git (recommandé) ou `dist-preview/`.
+
+## Mots-clés ciblés
+Ils viennent de l'autocomplétion Google (UK et US pour l'anglais, France pour le français), c'est-à-dire de ce que les gens tapent réellement.
+
+| Langue | Expressions visées | Où |
+|---|---|---|
+| EN (cible principale) | *french immersion homestay*, *french immersion for adults / in france for adults / older adults*, *live and learn at your teacher's home*, *french language holiday(s) for adults*, *one week french immersion*, *learn french in france*, *french lessons dordogne / bergerac* | title, description, H1, H2, FAQ |
+| FR | *séjours linguistiques immersifs Bergerac* (existant, conservé), *cours de français pour étrangers*, *FLE*, *apprendre le français en immersion*, *cours de français Bergerac* | title, description, H1, H2, FAQ |
+
+En français, « séjour linguistique adulte » est surtout tapé par des Français qui partent à l'étranger. C'est pour ça que la version FR vise aussi « cours de français (FLE) » et « pour étrangers ».
+
 ---
 
-# Mise en ligne sur Hostinger sans perdre le référencement
+# Phase 1 – Mise en ligne sur Netlify pour validation (aucun impact sur l'ancien site)
 
-## Pourquoi on perd du référencement lors d'une refonte
-Presque toujours pour l'une de ces raisons : des URLs qui changent sans redirection 301, un nom de domaine qui change, un `noindex` oublié de la préproduction, des titres ou du contenu supprimés, une coupure du site, ou un site en `www` qui devient `sans www` sans redirection.
-Ce projet traite chacun de ces points :
-- mêmes URLs ;
-- même domaine ;
-- titre de l'accueil FR repris mot pour mot ;
-- tout le contenu d'origine conservé ;
-- 301 sur les anciennes pages ;
-- canonical sur chaque page ;
-- redirection http et www vers `https://frenchinbergerac.net`.
+1. **Dépôt GitHub privé** : crée un dépôt vide (sans README), puis dans `site/` :
+   ```bash
+   git remote add origin https://github.com/<compte>/french-in-bergerac.git
+   git push -u origin master
+   ```
+2. **Netlify** → *Add new project* → *Import an existing project* → GitHub → choisis le dépôt. Les réglages sont lus depuis `netlify.toml` : build `npm run build`, dossier `dist`.
+3. *Project configuration* → *Change project name* : par exemple `french-in-bergerac`, ce qui donne l'adresse `https://french-in-bergerac.netlify.app`.
+4. **Formulaire** : *Forms* → *Enable form detection*, puis relance un déploiement (*Deploys* → *Trigger deploy*). Dans *Forms* → *Form notifications* → *Email notification*, mets l'adresse de Clotilde.
+5. Vérifie :
+   ```bash
+   bash tools/check-deploy.sh https://french-in-bergerac.netlify.app
+   ```
+   Tout doit être `OK`, dont la ligne « noindex (adresse d'aperçu) ».
+6. Envoie le lien à la cliente.
 
-## Étape 0 – Avant de toucher au site (à faire maintenant)
-1. **Google Search Console** : vérifie que la propriété *Domaine* `frenchinbergerac.net` existe. Sinon, crée-la (enregistrement TXT à ajouter dans la zone DNS chez Hostinger).
-2. Dans *Performances*, **exporte les 16 derniers mois** (requêtes et pages). C'est la référence pour comparer après la migration.
-3. Dans *Pages*, note les URLs indexées. S'il en existe d'autres que celles du tableau ci-dessus, ajoute-les en 301 dans `public/.htaccess`.
-4. Fais des captures d'écran de l'ancien site (on en a déjà une copie des textes et photos).
+**Retouches** : chaque `git push` redéploie automatiquement en une à deux minutes. Pour lui montrer une variante sans toucher à la version validée, pousse une branche : Netlify crée une adresse d'aperçu dédiée (*branch deploy*), elle aussi non indexable.
 
-## Étape 1 – Vérifier le type d'offre Hostinger
-Le site actuel est fait avec le **Website Builder**. Pour mettre nos propres fichiers, il faut un **hébergement web** (Premium / Business), avec un *Gestionnaire de fichiers* et un dossier `public_html`.
-- **Hébergement web** (souvent le cas si l'offre « tout compris » est d'environ 100 €/an) : dans hPanel, on remplace le site Builder par un site « vide » ou personnalisé sur le même domaine, puis on dépose les fichiers dans `public_html`.
-- **Offre Website Builder seule** : elle ne permet pas de déposer des fichiers. Il faudrait changer d'offre chez Hostinger ou, mieux, passer sur Cloudflare Pages (gratuit).
+# Phase 2 – Bascule du domaine (sans perte de référencement)
 
-> ⚠️ Ne supprime pas le site Builder avant d'avoir le nouveau prêt à déposer : on bascule les deux dans la même demi-heure.
+**Avant la bascule**
+1. **Google Search Console** : vérifie que la propriété *Domaine* `frenchinbergerac.net` existe. Sinon, crée-la (enregistrement TXT dans la zone DNS chez Hostinger).
+2. Dans *Performances*, **exporte les 16 derniers mois** (requêtes et pages). C'est la référence pour comparer.
+3. Dans *Pages*, note les URLs indexées. S'il en existe d'autres que celles du tableau des URLs, ajoute-les en 301 dans `public/_redirects`.
 
-## Étape 2 – Préparer
-1. **Formulaire** : crée une clé gratuite sur [web3forms.com](https://web3forms.com) avec l'adresse e-mail de Clotilde. Colle-la dans `src/config.ts` → `web3formsKey`. Sans clé, le bouton ouvre la messagerie du visiteur.
-2. Fais relire par la cliente les textes de `src/i18n.ts`, surtout la FAQ et la version anglaise.
-3. `npm run build`
+**Le jour J** (environ 30 minutes, sans coupure)
+1. Netlify → *Domain management* → *Add a domain* → `frenchinbergerac.net`. Mets-le en **domaine principal** et ajoute `www` en alias.
+2. Chez Hostinger → *DNS* du domaine : remplace les enregistrements `A` de `@` par celui qu'indique Netlify (son load balancer), et fais pointer le `CNAME` de `www` vers `french-in-bergerac.netlify.app`. Ne touche à rien d'autre.
+3. Attends que Netlify affiche le certificat HTTPS comme actif (quelques minutes à quelques heures).
+4. **Netlify → *Deploys* → *Trigger deploy* → *Clear cache and deploy site*.** ⚠️ Cette étape est indispensable : c'est elle qui retire le noindex.
+5. Vérifie :
+   ```bash
+   bash tools/check-deploy.sh
+   ```
+   La dernière ligne doit dire « indexable (vrai domaine) ».
+6. **Search Console** : soumets `https://frenchinbergerac.net/sitemap-index.xml`, puis *Inspection de l'URL* → *Demander une indexation* pour `/`, `/en`, `/contact` et `/en/contact`.
+7. Teste le [Test des résultats enrichis](https://search.google.com/test/rich-results) sur `/` et `/en`, l'aperçu de partage sur WhatsApp et l'envoi du formulaire.
 
-## Étape 3 – Déployer
-1. Dans hPanel → *Gestionnaire de fichiers* → `public_html` : supprime les anciens fichiers (s'il y en a).
-2. Dépose le **contenu** de `dist/` (pas le dossier lui-même), **fichier `.htaccess` compris** : il est caché par défaut sous Windows. Le plus simple est d'envoyer le zip `french-in-bergerac-dist.zip` et de l'extraire sur place.
-3. Vérifie que le SSL (HTTPS) est actif sur le domaine dans hPanel.
-4. Si le site Hostinger utilisait un CDN ou un cache, purge-le.
-
-## Étape 4 – Vérifier (dans l'heure)
-```bash
-bash tools/check-deploy.sh
-```
-Chaque ligne doit afficher `OK`. Si `/contact` ou `/en` renvoie 404 : le `.htaccess` n'a pas été envoyé, ou le dossier racine n'est pas `public_html`.
-
-Puis teste à la main :
-- [Test des résultats enrichis Google](https://search.google.com/test/rich-results) sur `/` et `/en` (LocalBusiness et FAQ détectés) ;
-- l'aperçu de partage (envoie le lien sur WhatsApp : l'image du pont doit apparaître) ;
-- l'envoi du formulaire FR et EN, puis la réception dans la boîte de Clotilde.
-
-## Étape 5 – Search Console (le jour même)
-1. *Sitemaps* : soumets `https://frenchinbergerac.net/sitemap-index.xml`. L'ancien `sitemap.xml` redirige déjà vers le nouveau.
-2. *Inspection de l'URL* → *Demander une indexation* pour `/`, `/en`, `/contact` et `/en/contact`.
-
-## Étape 6 – Suivi
-- Une fois par semaine pendant 6 à 8 semaines : comparer *Performances* et *Pages* avec l'export de l'étape 0. Une petite oscillation les 2 à 3 premières semaines est normale.
-- **Google Business Profile** : créer ou vérifier la fiche « French in Bergerac » (même nom, adresse et téléphone que le site), avec un lien vers le site. C'est le levier le plus fort pour les recherches locales.
-- Ensuite : demander aux anciens élèves de laisser un avis Google.
-
-## Plus tard : quitter Hostinger (≈ 12 €/an au lieu de ≈ 100 €)
-Le site fonctionne tel quel sur Cloudflare Pages (gratuit) : `public/_redirects` y remplace `.htaccess`, et les URLs sans `.html` sont gérées nativement. Pour la migration, il suffit de connecter le dépôt Git, de régler la commande de build `npm run build` et le dossier `dist`, puis de pointer le domaine. Le transfert du domaine `.net` vers Cloudflare Registrar (prix coûtant) peut se faire ensuite, ou au prochain renouvellement.
+**Après**
+- Résilie l'**hébergement** Hostinger, mais **pas le nom de domaine**. Vérifie sa date de renouvellement : si le domaine était « offert » avec le forfait, il faudra le payer à part, ou le transférer vers Cloudflare Registrar ou OVH (environ 10 à 15 € par an).
+- Une fois par semaine pendant 6 à 8 semaines : compare *Performances* et *Pages* avec l'export. Une petite oscillation les premières semaines est normale.
+- **Google Business Profile** : crée ou vérifie la fiche « French in Bergerac » (mêmes nom, adresse et téléphone que le site), avec un lien vers le site. C'est le levier le plus fort en local. Demande aux anciens élèves des avis Google.
+- **Annuaires du secteur** (liens entrants) : FLE.fr, languagecourse.net (catégorie *live with teacher*), GoOverseas, AngloInfo Dordogne.
 
 ## À valider avec la cliente
-- Mentions légales : obligatoires pour un site professionnel en France (nom, statut, SIRET, hébergeur). Il faut une page dédiée et les informations correspondantes.
-- Nouvelles photos en haute définition, si possible (surtout pour la grande photo d'accueil, aujourd'hui en 868 px de large).
-- Textes en anglais : relecture par une personne anglophone, idéalement.
+- Les textes de `src/i18n.ts`, en particulier la mention « pour adultes », la FAQ et la version anglaise (idéalement relue par une personne anglophone).
+- Les mentions légales : obligatoires pour un site professionnel en France (nom, statut, SIRET, hébergeur Netlify). Il faut une page dédiée.
+- Des photos en haute définition si possible, surtout pour la grande photo d'accueil, aujourd'hui en 868 px de large.

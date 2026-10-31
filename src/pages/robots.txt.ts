@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
 
-// En aperçu (npm run build:preview), chaque page porte un noindex : on laisse explorer pour que Google le voie,
+// En aperçu, chaque page porte un noindex : on laisse explorer pour que Google le voie,
 // et on ne déclare pas de sitemap.
-const preview = import.meta.env.PUBLIC_PREVIEW === 'true';
+const preview = __NOINDEX__;
 
 export const GET: APIRoute = () =>
   new Response(

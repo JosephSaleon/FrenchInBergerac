@@ -1,5 +1,16 @@
-# Utilisé uniquement si le site est un jour hébergé sur Cloudflare Pages ou Netlify (ignoré par Hostinger)
-/sjours-linguistiques-immersifs--bergerac-pour-apprendre-le-franais-efficacement / 301
-/sjours-linguistiques--bergerac--immersion-dans-la-culture-franaise / 301
-/accueil / 301
-/sitemap.xml /sitemap-index.xml 301
+# Redirections Netlify (équivalent de public/.htaccess, qui ne sert que sur Apache/Hostinger)
+
+# Anciennes pages du site Hostinger -> 301 (préserve le référencement)
+/sjours-linguistiques-immersifs--bergerac-pour-apprendre-le-franais-efficacement  /  301!
+/sjours-linguistiques--bergerac--immersion-dans-la-culture-franaise               /  301!
+/accueil       /                    301!
+/sitemap.xml   /sitemap-index.xml   301!
+
+# URLs sans slash final (le site utilise /contact et /en, jamais /contact/)
+/contact/      /contact      301!
+/en/           /en           301!
+/en/contact/   /en/contact   301!
+/merci/        /merci        301!
+
+# /en est servi par en.html (le dossier en/ existe aussi, d'où la règle explicite)
+/en            /en.html      200

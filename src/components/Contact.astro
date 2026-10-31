@@ -10,9 +10,6 @@ interface Props {
 const { lang } = Astro.props;
 const d = t(lang);
 const f = d.contact.form;
-const thanksUrl = new URL(ROUTES.thanks[lang], SITE.url).href;
-// Sans clé Web3Forms, le formulaire ouvre la messagerie du visiteur (solution de secours)
-const hasKey = SITE.web3formsKey.length > 0;
 ---
 
 <Base lang={lang} route="contact" title={d.meta.contactTitle} description={d.meta.contactDescription}>
@@ -34,21 +31,19 @@ const hasKey = SITE.web3formsKey.length > 0;
         </div>
       </div>
 
+      <!-- Netlify Forms : détecté au déploiement, les demandes arrivent dans Netlify et par e-mail -->
       <form
         class="contact-form"
+        name="contact"
         method="POST"
-        action={hasKey ? 'https://api.web3forms.com/submit' : `mailto:${SITE.email}`}
-        enctype={hasKey ? undefined : 'text/plain'}
+        action={ROUTES.thanks[lang]}
+        data-netlify="true"
+        netlify-honeypot="bot-field"
       >
-        {hasKey && (
-          <>
-            <input type="hidden" name="access_key" value={SITE.web3formsKey} />
-            <input type="hidden" name="subject" value={f.subject} />
-            <input type="hidden" name="from_name" value={SITE.name} />
-            <input type="hidden" name="redirect" value={thanksUrl} />
-            <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          </>
-        )}
+        <input type="hidden" name="form-name" value="contact" />
+        <input type="hidden" name="subject" value={f.subject} />
+        <input type="hidden" name="langue" value={lang} />
+        <label class="hp" aria-hidden="true">Ne pas remplir <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
         <label>
           <span>{f.name}</span>
           <input type="text" name="name" autocomplete="given-name" />

@@ -11,9 +11,6 @@ export const SITE = {
   city: 'Bergerac',
   region: 'Nouvelle-Aquitaine',
   priceWeek: 1270,
-  // Clé gratuite à créer sur https://web3forms.com avec l'adresse e-mail de Clotilde.
-  // Tant qu'elle n'est pas renseignée, le formulaire renvoie vers l'e-mail direct.
-  web3formsKey: '',
 };
 
 export type Lang = 'fr' | 'en';
