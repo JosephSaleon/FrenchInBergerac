@@ -9,7 +9,26 @@ npm install
 npm run dev       # développement : http://localhost:4321
 npm run build     # génère le site final dans dist/
 npm run preview   # prévisualise dist/
+npm run build:preview   # version d'APERÇU pour la cliente, dans dist-preview/ (noindex partout)
 ```
+
+> ⚠️ `dist-preview/` ne doit **jamais** être déposé sur frenchinbergerac.net : toutes ses pages sont en `noindex`. Pour Hostinger, c'est toujours `dist/` (ou `french-in-bergerac-dist.zip`).
+
+## Faire valider la cliente
+1. `npm run build:preview`
+2. Va sur [app.netlify.com/drop](https://app.netlify.com/drop) (compte gratuit) et glisse le dossier `dist-preview/`. Netlify donne une adresse du type `https://xxx.netlify.app`. On peut la renommer, par exemple `french-in-bergerac-apercu.netlify.app`.
+3. Envoie le lien à la cliente : elle navigue sur tout le site, en FR et en EN. Le formulaire ne fonctionnera qu'une fois la clé Web3Forms ajoutée.
+4. Une fois le site validé, supprime le site Netlify.
+
+## Mots-clés ciblés
+Ils viennent de l'autocomplétion Google (UK et US pour l'anglais, France pour le français), c'est-à-dire de ce que les gens tapent réellement.
+
+| Langue | Expressions visées | Où |
+|---|---|---|
+| EN (cible principale) | *french immersion homestay*, *french immersion for adults / in france for adults / older adults*, *live and learn at your teacher's home*, *french language holiday(s) for adults*, *one week french immersion*, *learn french in france*, *french lessons dordogne / bergerac* | title, description, H1, H2, FAQ |
+| FR | *séjours linguistiques immersifs Bergerac* (existant, conservé), *cours de français pour étrangers*, *FLE*, *apprendre le français en immersion*, *cours de français Bergerac* | title, description, H1, H2, FAQ |
+
+En français, « séjour linguistique adulte » est surtout tapé par des Français qui partent à l'étranger. C'est pour ça que la version FR vise aussi « cours de français (FLE) » et « pour étrangers ».
 
 ## Organisation
 

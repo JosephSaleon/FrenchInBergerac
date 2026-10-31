@@ -14,17 +14,17 @@ const fr = {
     contact: 'Contact',
   },
   meta: {
-    homeTitle: 'Séjours linguistiques immersifs à Bergerac pour progresser en français | French in Bergerac',
+    homeTitle: 'Séjours linguistiques immersifs à Bergerac – Cours de français (FLE) | French in Bergerac',
     homeDescription:
-      'Séjour linguistique en immersion chez l’habitant à Bergerac, en Dordogne : cours de français le matin, sorties culturelles l’après-midi, demi-pension. Cours individuels ou en mini-groupe.',
-    contactTitle: 'Contact et devis – Séjour linguistique à Bergerac | French in Bergerac',
+      'Séjour linguistique en immersion chez votre professeure à Bergerac (Dordogne) : cours de français pour étrangers le matin, sorties culturelles l’après-midi, demi-pension. Une semaine dès 1 270 €.',
+    contactTitle: 'Contact et devis – Séjour linguistique et cours de français à Bergerac | French in Bergerac',
     contactDescription:
       'Contactez Clotilde pour organiser votre séjour linguistique à Bergerac : dates, niveau, devis personnalisé. Réponse rapide par e-mail ou téléphone.',
     thanksTitle: 'Message envoyé | French in Bergerac',
     ogAlt: 'Le vieux pont de Bergerac sur la Dordogne au coucher du soleil',
   },
   hero: {
-    kicker: 'Bergerac · Dordogne · Périgord',
+    kicker: 'Cours de français · Bergerac · Dordogne',
     title: 'Séjours linguistiques immersifs à Bergerac',
     lead: 'Pour pratiquer et vivre le français dans une ambiance chaleureuse et détendue, immergé dans la culture du Périgord.',
     cta: 'Demander un devis',
@@ -37,7 +37,7 @@ const fr = {
     ],
   },
   intro: {
-    title: 'Apprendre le français en le vivant',
+    title: 'Apprendre le français en immersion, en le vivant',
     p1: 'Vous souhaitez pratiquer le français de façon intensive, avec à la fois des cours et une immersion dans la culture locale. Vous souhaitez être accompagné, mais appréciez aussi l’autonomie.',
     p2: 'Bienvenue chez moi, au centre de Bergerac : cours de français le matin, et l’après-midi, cette ville d’art et d’histoire au bord de la Dordogne s’offre à vous — ses musées, ses artisans d’art, ses cafés, ses terrasses, ses restaurants et la nature toute proche.',
   },
@@ -75,7 +75,7 @@ const fr = {
     badges: ['13 ans d’enseignement', 'CELTA', 'Formation FLE'],
   },
   house: {
-    title: 'La maison',
+    title: 'Hébergé chez votre professeure, à Bergerac',
     lead: 'Une maison avec jardinet, à 5 minutes à pied de l’hyper-centre et à 5 minutes à vélo du parc de Pombonne. Les gares sont à 10 minutes à pied pour rayonner dans la région.',
     captions: { salon: 'Le salon', chambre: 'Une chambre', sde1: 'La salle d’eau', sde2: 'Salle d’eau attenante', jardin: 'Le jardin', velos: 'Les vélos' },
     photos: {
@@ -88,7 +88,7 @@ const fr = {
     },
   },
   region: {
-    title: 'Bergerac et le Périgord',
+    title: 'Bergerac, la Dordogne et le Périgord',
     p1: 'Ville d’art et d’histoire au bord de la Dordogne, Bergerac se découvre à pied et à vélo : vieille ville, quais, musées, cafés et restaurants.',
     p2: 'Vous pourrez bien sûr visiter les nombreuses richesses patrimoniales de la région en voiture ou en transports en commun.',
     photoAlt: 'Fresque murale colorée représentant Bergerac et ses monuments',
@@ -115,6 +115,7 @@ const fr = {
       ['Combien coûte un séjour linguistique à Bergerac ?', 'Le séjour type d’une semaine coûte 1 270 € en individuel. Il comprend 15 heures de cours, 3 sorties accompagnées, 3 soirées et l’hébergement en demi-pension. Un devis personnalisé est établi selon vos souhaits.'],
       ['Les cours sont-ils individuels ou en groupe ?', 'Les deux sont possibles : cours individuels, ou très petit groupe de 4 personnes de même niveau au maximum.'],
       ['Peut-on adapter la durée ou le programme ?', 'Oui. Le séjour type est modifiable et adaptable selon vos préférences : contactez-moi pour en parler.'],
+      ['À qui s’adresse ce séjour linguistique ?', 'Aux adultes qui souhaitent pratiquer le français de façon intensive, en associant cours et immersion dans la culture locale, avec un accompagnement personnalisé et une part d’autonomie.'],
       ['Comment venir à Bergerac ?', 'Les gares sont à 10 minutes à pied de la maison. Sur place, tout se fait à pied ou à vélo, et la région se visite en voiture ou en transports en commun.'],
     ],
   },
@@ -177,19 +178,19 @@ const en: Dict = {
     contact: 'Contact',
   },
   meta: {
-    homeTitle: 'French Immersion Homestay in Bergerac, Dordogne | French in Bergerac',
+    homeTitle: 'French Immersion Homestay for Adults in Bergerac, France | French in Bergerac',
     homeDescription:
-      'Learn French in France with an immersion homestay in Bergerac, Dordogne: French lessons in the morning, cultural outings in the afternoon, half board. One-to-one or small-group lessons.',
-    contactTitle: 'Contact & Quote – French Immersion Stay in Bergerac | French in Bergerac',
+      'Live and learn French at your teacher’s home in Bergerac, Dordogne: a one-week French immersion for adults with 15 hours of lessons, cultural outings and half board. From €1,270.',
+    contactTitle: 'Contact & Quote – French Immersion Homestay in Bergerac | French in Bergerac',
     contactDescription:
       'Get in touch with Clotilde to plan your French immersion stay in Bergerac: dates, level and a tailored quote. Quick reply by email or phone.',
     thanksTitle: 'Message sent | French in Bergerac',
     ogAlt: 'The old bridge of Bergerac over the Dordogne river at sunset',
   },
   hero: {
-    kicker: 'Bergerac · Dordogne · Périgord',
-    title: 'French immersion stays in Bergerac',
-    lead: 'Practise and live French in a warm, relaxed home, immersed in the culture of the Périgord in south-west France.',
+    kicker: 'Live & learn at your teacher’s home · Dordogne',
+    title: 'French immersion homestay in Bergerac',
+    lead: 'A French language holiday for adults: practise and live French in a warm, relaxed home, immersed in the culture of the Périgord in south-west France.',
     cta: 'Request a quote',
     ctaSecondary: 'Discover the stay',
     photoAlt: 'The old bridge of Bergerac and the Dordogne riverbanks at sunset',
@@ -200,7 +201,7 @@ const en: Dict = {
     ],
   },
   intro: {
-    title: 'Learn French by living it',
+    title: 'Learn French in France by living it',
     p1: 'You want to practise French intensively, combining lessons with immersion in the local culture. You like being supported, but you also value your independence.',
     p2: 'Welcome to my home in the centre of Bergerac: French lessons in the morning, and in the afternoon this town of art and history on the banks of the Dordogne is yours to explore — its museums, craftspeople, cafés, terraces, restaurants and the countryside close by.',
   },
@@ -213,7 +214,7 @@ const en: Dict = {
     ],
   },
   stay: {
-    title: 'The typical one-week stay',
+    title: 'One-week French immersion: the typical stay',
     intro: 'A complete programme that can be adjusted to suit your preferences.',
     includes: [
       '15 hours of French lessons',
@@ -238,7 +239,7 @@ const en: Dict = {
     badges: ['13 years of teaching', 'CELTA', 'FLE training'],
   },
   house: {
-    title: 'The house',
+    title: 'Your homestay in Bergerac',
     lead: 'A house with a small garden, a 5-minute walk from the town centre and 5 minutes by bike from Pombonne park. The railway stations are a 10-minute walk away, perfect for exploring the region.',
     captions: { salon: 'Living room', chambre: 'Bedroom', sde1: 'Shower room', sde2: 'En-suite shower room', jardin: 'Garden', velos: 'Bicycles' },
     photos: {
@@ -251,7 +252,7 @@ const en: Dict = {
     },
   },
   region: {
-    title: 'Bergerac and the Périgord',
+    title: 'Bergerac, the Dordogne and the Périgord',
     p1: 'A town of art and history on the Dordogne river, Bergerac is best discovered on foot and by bike: the old town, the riverside, museums, cafés and restaurants.',
     p2: 'You can also visit the many heritage treasures of the region by car or public transport.',
     photoAlt: 'Colourful wall mural depicting Bergerac and its landmarks',
@@ -278,6 +279,7 @@ const en: Dict = {
       ['How much does a French immersion stay in Bergerac cost?', 'The typical one-week stay costs €1,270 one-to-one. It includes 15 hours of lessons, 3 guided outings, 3 evenings and half-board accommodation. A tailored quote is prepared according to your wishes.'],
       ['Are lessons one-to-one or in a group?', 'Both are possible: one-to-one lessons, or a very small group of no more than 4 people of the same level.'],
       ['Can the length or programme be adjusted?', 'Yes. The typical stay can be changed and adapted to your preferences — just get in touch.'],
+      ['Who is this French immersion homestay for?', 'Adults who want to practise French intensively, combining lessons with immersion in the local culture, with personal support and some independence.'],
       ['How do I get to Bergerac?', 'The railway stations are a 10-minute walk from the house. In town everything is within walking or cycling distance, and the region can be explored by car or public transport.'],
     ],
   },

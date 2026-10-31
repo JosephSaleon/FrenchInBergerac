@@ -1,4 +1,5 @@
-node_modules/
-dist/
-.astro/
 *.zip
+.astro/
+dist-preview/
+dist/
+node_modules/

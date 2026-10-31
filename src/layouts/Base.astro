@@ -17,7 +17,9 @@ interface Props {
   jsonLd?: object[];
 }
 
-const { lang, route, title, description, noindex = false, jsonLd = [] } = Astro.props;
+const { lang, route, title, description, jsonLd = [] } = Astro.props;
+// Version d'aperçu pour validation client : jamais indexée
+const noindex = Astro.props.noindex || import.meta.env.PUBLIC_PREVIEW === 'true';
 const d = t(lang);
 const canonical = new URL(route ? ROUTES[route][lang] : Astro.url.pathname, SITE.url).href;
 const alternates = route
