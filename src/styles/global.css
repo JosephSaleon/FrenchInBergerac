@@ -603,6 +603,24 @@ p {
 .teacher-photo img {
   object-position: 70% center;
 }
+.yoga {
+  margin-top: 1.75rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--paper-deep);
+  border-left: 4px solid var(--ochre);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.yoga h3 {
+  margin: 0 0 0.5rem;
+}
+.yoga p {
+  margin: 0;
+}
+.yoga .yoga-credential {
+  margin-top: 0.75rem;
+  font-size: 0.95em;
+  color: var(--ink-soft);
+}
 .badges {
   display: flex;
   flex-wrap: wrap;

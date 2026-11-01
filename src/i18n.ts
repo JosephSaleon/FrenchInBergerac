@@ -72,7 +72,10 @@ const fr = {
     p2: 'En cours individuel ou en très petit groupe (4 personnes de même niveau au maximum), nous partons souvent d’un document écrit choisi selon vos objectifs et vos centres d’intérêt. J’insiste sur l’oral et je veille à créer un climat de confiance pour vous amener à vous exprimer avec assurance.',
     p3: 'Mes centres d’intérêt ? La littérature, le cinéma, le théâtre : nous en profiterons selon la programmation locale pendant votre séjour. Le dimanche, le cours peut se faire en marchant le long de la Dordogne.',
     photoAlt: 'Clotilde, professeure de français, au bord de la Dordogne',
-    badges: ['13 ans d’enseignement', 'CELTA', 'Formation FLE'],
+    badges: ['13 ans d’enseignement', 'CELTA', 'Formation FLE', 'Professeure de yoga'],
+    yogaTitle: 'Yoga et apprentissage',
+    yoga: 'Parfois, nous commençons certains cours de français par quelques mouvements simples de yoga, des exercices de respiration ou un court moment de relaxation. Quelques minutes pour relâcher les tensions, se recentrer et favoriser la concentration avant de commencer à parler français. Aucune expérience du yoga n’est nécessaire.',
+    yogaCredential: 'Je suis diplômée de l’école de yoga Gayatri de Tenerife, où j’ai suivi en 2024 une formation de professeur de yoga de 200 heures.',
   },
   house: {
     title: 'Hébergé chez votre professeure, à Bergerac',
@@ -236,7 +239,10 @@ const en: Dict = {
     p2: 'In one-to-one lessons or very small groups (a maximum of 4 people of the same level), we often start from a written text chosen according to your goals and interests. I focus on speaking, and I make sure to create a climate of trust so you can express yourself with confidence.',
     p3: 'My interests? Literature, cinema and theatre — we will make the most of whatever is on locally during your stay. On Sundays, the lesson can take place while walking along the Dordogne.',
     photoAlt: 'Clotilde, French teacher, on the banks of the Dordogne',
-    badges: ['13 years of teaching', 'CELTA', 'FLE training'],
+    badges: ['13 years of teaching', 'CELTA', 'FLE training', 'Yoga teacher'],
+    yogaTitle: 'Yoga and learning',
+    yoga: 'Sometimes we begin a French lesson with a few simple yoga movements, some breathing exercises or a short moment of relaxation. A few minutes to release tension, refocus and help your concentration before you start speaking French. No yoga experience is needed.',
+    yogaCredential: 'I trained at the Gayatri Yoga school in Tenerife, where I completed a 200-hour yoga teacher training in 2024.',
   },
   house: {
     title: 'Your homestay in Bergerac',
