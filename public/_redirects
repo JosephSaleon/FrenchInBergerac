@@ -6,8 +6,6 @@
 /accueil       /                    301!
 /sitemap.xml   /sitemap-index.xml   301!
 
-# URLs sans slash final (/contact, jamais /contact/). Exception : l'accueil anglais est /en/ (dossier en/),
-# Netlify redirige lui-même /en vers /en/.
-/contact/      /contact      301!
-/en/contact/   /en/contact   301!
-/merci/        /merci        301!
+# Pas de règle /contact/ -> /contact : Netlify applique une règle avec ou sans slash final,
+# elle s'appliquerait donc aussi à /contact et bouclerait. Netlify gère lui-même le slash final,
+# et l'URL canonique indique à Google l'adresse officielle.

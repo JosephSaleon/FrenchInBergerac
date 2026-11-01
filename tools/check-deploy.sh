@@ -23,7 +23,6 @@ for p in / /contact /en/ /en/contact /merci /en/thank-you /sitemap-index.xml /ro
 echo "== Redirections 301"
 check "$BASE/sjours-linguistiques-immersifs--bergerac-pour-apprendre-le-franais-efficacement" 301 "$BASE/"
 check "$BASE/sjours-linguistiques--bergerac--immersion-dans-la-culture-franaise" 301 "$BASE/"
-check "$BASE/contact/" 301 "$BASE/contact"
 check "$BASE/en" 301 "$BASE/en/"
 check "$BASE/sitemap.xml" 301 "$BASE/sitemap-index.xml"
 check "http://$HOST/contact" 301 "$BASE/contact"
