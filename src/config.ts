@@ -17,7 +17,7 @@ export type Lang = 'fr' | 'en';
 
 // Correspondance des pages entre les deux langues (pour hreflang et le sélecteur de langue)
 export const ROUTES = {
-  home: { fr: '/', en: '/en' },
+  home: { fr: '/', en: '/en/' },
   contact: { fr: '/contact', en: '/en/contact' },
   thanks: { fr: '/merci', en: '/en/thank-you' },
 } as const;

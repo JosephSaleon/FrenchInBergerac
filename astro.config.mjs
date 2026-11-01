@@ -20,13 +20,21 @@ if (NOINDEX) console.log('[seo] Build NON indexable (noindex sur toutes les page
 
 export default defineConfig({
   site: SITE,
-  // URLs sans slash final ni .html : on garde exactement /contact comme sur l'ancien site
-  trailingSlash: 'never',
-  build: { format: 'file' },
+  // URLs sans .html : /contact comme sur l'ancien site. L'accueil anglais est en/index.html
+  // (servi en /en/) pour éviter le conflit fichier en.html / dossier en/ qui bouclait sur Netlify.
+  trailingSlash: 'ignore',
+  build: { format: 'preserve' },
   vite: { define: { __NOINDEX__: JSON.stringify(NOINDEX) } },
   integrations: [
     sitemap({
       filter: (page) => !/\/(merci|en\/thank-you)$/.test(page),
+      // l'accueil anglais est /en/ (voir plus haut) : même adresse que la canonique
+      serialize(item) {
+        const fix = (/** @type {string} */ u) => u.replace(/\/en$/, '/en/');
+        item.url = fix(item.url);
+        item.links = item.links?.map((l) => ({ ...l, url: fix(l.url) }));
+        return item;
+      },
       i18n: {
         defaultLocale: 'fr',
         locales: { fr: 'fr-FR', en: 'en-GB' },

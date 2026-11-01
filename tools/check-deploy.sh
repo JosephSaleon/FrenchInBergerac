@@ -18,13 +18,13 @@ check() { # url  code_attendu  [destination_attendue]
 }
 
 echo "== Pages (200 attendu)"
-for p in / /contact /en /en/contact /merci /en/thank-you /sitemap-index.xml /robots.txt /og-image.jpg; do check "$BASE$p" 200; done
+for p in / /contact /en/ /en/contact /merci /en/thank-you /sitemap-index.xml /robots.txt /og-image.jpg; do check "$BASE$p" 200; done
 
 echo "== Redirections 301"
 check "$BASE/sjours-linguistiques-immersifs--bergerac-pour-apprendre-le-franais-efficacement" 301 "$BASE/"
 check "$BASE/sjours-linguistiques--bergerac--immersion-dans-la-culture-franaise" 301 "$BASE/"
 check "$BASE/contact/" 301 "$BASE/contact"
-check "$BASE/en/" 301 "$BASE/en"
+check "$BASE/en" 301 "$BASE/en/"
 check "$BASE/sitemap.xml" 301 "$BASE/sitemap-index.xml"
 check "http://$HOST/contact" 301 "$BASE/contact"
 [[ $LIVE == 1 ]] && check "https://www.$HOST/contact" 301 "$BASE/contact"

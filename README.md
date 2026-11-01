@@ -36,7 +36,7 @@ npm run build:preview   # version non indexable dans dist-preview/
 |---|---|---|
 | `/` | Accueil FR | **identique à l'ancien site** |
 | `/contact` | Contact FR | **identique à l'ancien site** |
-| `/en` | Accueil EN | nouveau |
+| `/en/` | Accueil EN (`/en` redirige vers `/en/`) | nouveau |
 | `/en/contact` | Contact EN | nouveau |
 | `/merci`, `/en/thank-you` | Confirmation du formulaire | non indexées |
 | 2 anciennes pages « blog » Hostinger | – | redirection 301 vers `/` |
@@ -104,8 +104,8 @@ En français, « séjour linguistique adulte » est surtout tapé par des Franç
    bash tools/check-deploy.sh
    ```
    La dernière ligne doit dire « indexable (vrai domaine) ».
-6. **Search Console** : soumets `https://frenchinbergerac.net/sitemap-index.xml`, puis *Inspection de l'URL* → *Demander une indexation* pour `/`, `/en`, `/contact` et `/en/contact`.
-7. Teste le [Test des résultats enrichis](https://search.google.com/test/rich-results) sur `/` et `/en`, l'aperçu de partage sur WhatsApp et l'envoi du formulaire.
+6. **Search Console** : soumets `https://frenchinbergerac.net/sitemap-index.xml`, puis *Inspection de l'URL* → *Demander une indexation* pour `/`, `/en/`, `/contact` et `/en/contact`.
+7. Teste le [Test des résultats enrichis](https://search.google.com/test/rich-results) sur `/` et `/en/`, l'aperçu de partage sur WhatsApp et l'envoi du formulaire.
 
 **Après**
 - Résilie l'**hébergement** Hostinger, mais **pas le nom de domaine**. Vérifie sa date de renouvellement : si le domaine était « offert » avec le forfait, il faudra le payer à part, ou le transférer vers Cloudflare Registrar ou OVH (environ 10 à 15 € par an).

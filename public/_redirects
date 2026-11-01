@@ -6,11 +6,8 @@
 /accueil       /                    301!
 /sitemap.xml   /sitemap-index.xml   301!
 
-# URLs sans slash final (le site utilise /contact et /en, jamais /contact/)
+# URLs sans slash final (/contact, jamais /contact/). Exception : l'accueil anglais est /en/ (dossier en/),
+# Netlify redirige lui-même /en vers /en/.
 /contact/      /contact      301!
-/en/           /en           301!
 /en/contact/   /en/contact   301!
 /merci/        /merci        301!
-
-# /en est servi par en.html (le dossier en/ existe aussi, d'où la règle explicite)
-/en            /en.html      200

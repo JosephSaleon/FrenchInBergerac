@@ -22,14 +22,17 @@ RewriteRule ^ /%1 [L,R=301]
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(.+)/$ /$1 [L,R=301]
 
-# 4. Sert le fichier .html correspondant (/contact -> contact.html, /en -> en.html)
+# 4. Accueil anglais : /en -> /en/ (DirectorySlash Off le ferait sinon échouer)
+RewriteRule ^en$ /en/ [L,R=301]
+
+# 5. Sert le fichier .html correspondant (/contact -> contact.html)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(.+?)/?$ $1.html [L]
 
 ErrorDocument 404 /404.html
 
-# 5. Cache navigateur : les fichiers de /_astro ont un nom unique, on peut les garder 1 an
+# 6. Cache navigateur : les fichiers de /_astro ont un nom unique, on peut les garder 1 an
 <IfModule mod_headers.c>
   <FilesMatch "\.(js|css|webp|avif|jpg|jpeg|png|svg|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
