@@ -72,8 +72,8 @@ En français, « séjour linguistique adulte » est surtout tapé par des Franç
 
 1. **Dépôt GitHub privé** : crée un dépôt vide (sans README), puis dans `site/` :
    ```bash
-   git remote add origin https://github.com/<compte>/french-in-bergerac.git
-   git push -u origin master
+   git remote add origin https://github.com/JosephSaleon/FrenchInBergerac.git
+   git push -u origin main
    ```
 2. **Netlify** → *Add new project* → *Import an existing project* → GitHub → choisis le dépôt. Les réglages sont lus depuis `netlify.toml` : build `npm run build`, dossier `dist`.
 3. *Project configuration* → *Change project name* : par exemple `french-in-bergerac`, ce qui donne l'adresse `https://french-in-bergerac.netlify.app`.
