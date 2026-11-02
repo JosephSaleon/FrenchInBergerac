@@ -2,7 +2,7 @@
   "photos": [
     {
       "image": "/src/assets/salon-vue-jardin.webp",
-      "size": "tall",
+      "size": "big",
       "focus": "center",
       "captionFr": "Le salon",
       "captionEn": "Living room",
@@ -11,7 +11,7 @@
     },
     {
       "image": "/src/assets/chambre-premier-rue.webp",
-      "size": "wide",
+      "size": "normal",
       "focus": "center",
       "captionFr": "Une chambre",
       "captionEn": "Bedroom",
@@ -19,8 +19,17 @@
       "altEn": "A guest bedroom with a double bed"
     },
     {
-      "image": "/src/assets/jardin-depuis-veranda.webp",
+      "image": "/src/assets/salle-d-eau-1.jpg",
       "size": "normal",
+      "focus": "center",
+      "captionFr": "La salle d’eau",
+      "captionEn": "Shower room",
+      "altFr": "La salle d’eau avec douche",
+      "altEn": "The shower room"
+    },
+    {
+      "image": "/src/assets/pergola-est.webp",
+      "size": "tall",
       "focus": "center",
       "captionFr": "Le jardin",
       "captionEn": "Garden",
@@ -37,22 +46,22 @@
       "altEn": "The en-suite shower room"
     },
     {
+      "image": "/src/assets/jardin-depuis-veranda.webp",
+      "size": "tall",
+      "focus": "center",
+      "captionFr": "Jardin",
+      "captionEn": "garden",
+      "altFr": "un jardin",
+      "altEn": "A garden"
+    },
+    {
       "image": "/src/assets/velos.jpg",
-      "size": "wide",
+      "size": "normal",
       "focus": "center",
       "captionFr": "Les vélos",
       "captionEn": "Bicycles",
       "altFr": "Les vélos à disposition dans le jardin",
       "altEn": "Bicycles available in the garden"
-    },
-    {
-      "image": "/src/assets/salle-d-eau-1.jpg",
-      "size": "normal",
-      "focus": "center",
-      "captionFr": "La salle d’eau",
-      "captionEn": "Shower room",
-      "altFr": "La salle d’eau avec douche",
-      "altEn": "The shower room"
     }
   ]
 }
