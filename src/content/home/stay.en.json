@@ -9,9 +9,9 @@
     "Single or double room",
     "Kitchenette available for other meals"
   ],
+  "price": 1390,
   "priceLabel": "from",
   "pricePer": "per week, one-to-one",
   "priceNote": "Length, pace and programme can all be adjusted: get in touch for a tailored quote.",
-  "cta": "Request my quote",
-  "price": 1270
+  "cta": "Request my quote"
 }

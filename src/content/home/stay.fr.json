@@ -3,15 +3,15 @@
   "intro": "Un programme complet, modifiable et adaptable selon vos préférences.",
   "includes": [
     "15 heures de cours de français",
-    "3 sorties accompagnées l’après-midi",
+    "Réveil corporel et yoga doux",
     "3 soirées",
     "Hébergement en demi-pension",
     "Chambre individuelle ou double",
     "Kitchenette à disposition pour les repas libres"
   ],
+  "price": 1390,
   "priceLabel": "à partir de",
   "pricePer": "la semaine, en individuel",
   "priceNote": "Durée, rythme et programme sont ajustables : contactez-moi pour un devis personnalisé.",
-  "cta": "Demander mon devis",
-  "price": 1270
+  "cta": "Demander mon devis"
 }
