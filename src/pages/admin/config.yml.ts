@@ -211,8 +211,10 @@ const config = {
     // Connexion par le fournisseur OAuth GitHub de Netlify (pas de base_url : c'est le défaut)
   },
   site_url: 'https://frenchinbergerac.net',
-  media_folder: 'public/uploads',
-  public_folder: '/uploads',
+  // Même dossier que les photos des sections : « Ressources globales » et « Ressources du champ »
+  // désignent ainsi le même endroit, celui que le build sait optimiser
+  media_folder: '/src/assets',
+  public_folder: '/src/assets',
   slug: { encoding: 'ascii', clean_accents: true },
   // Photos envoyées depuis l'admin : nom de fichier nettoyé, converties en WebP et limitées
   // à 2400 px (une photo de téléphone de 5 Mo pèse alors quelques centaines de Ko)

@@ -3,12 +3,12 @@
   "lead": "A house with a small garden, a 5-minute walk from the town centre and 5 minutes by bike from Pombonne park. The railway stations are a 10-minute walk away, perfect for exploring the region.",
   "photos": {
     "salon": {
-      "image": "/uploads/salon-vue-jardin.webp",
+      "image": "/src/assets/salon-vue-jardin.webp",
       "caption": "Living room",
       "alt": "The bright ground-floor living room"
     },
     "chambre": {
-      "image": "/uploads/chambre-premier-rue.webp",
+      "image": "/src/assets/chambre-premier-rue.webp",
       "caption": "Bedroom",
       "alt": "A guest bedroom with a double bed"
     },
@@ -23,7 +23,7 @@
       "alt": "The en-suite shower room"
     },
     "jardin": {
-      "image": "/uploads/jardin-depuis-veranda.webp",
+      "image": "/src/assets/jardin-depuis-veranda.webp",
       "caption": "Garden",
       "alt": "The garden with its wrought-iron table and chairs"
     },
