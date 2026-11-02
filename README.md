@@ -21,6 +21,7 @@ npm run build:preview   # version non indexable dans dist-preview/
 | `src/content/contact/contact.<langue>.json` | Titre et introduction de la page contact |
 | `src/content/settings/coordonnees.json` | **Téléphone, e-mail, adresse** (pied de page, page contact, données pour Google) |
 | `src/content/settings/seo.<langue>.json` | Titres et descriptions Google de chaque page |
+| `src/content/home/house-gallery.json` | Galerie de la maison : ordre, taille, cadrage, légendes FR/EN |
 | `src/content/blog/<article>/` | **Articles du blog** : `index.fr.md`, `index.en.md` (facultatif) et leurs photos |
 | `src/site-content.ts` | Charge et valide les fichiers ci-dessus : une saisie invalide fait échouer le build (le site en ligne reste intact) |
 | `src/content.config.ts` | Schéma des articles du blog |
@@ -82,7 +83,8 @@ En français, « séjour linguistique adulte » est surtout tapé par des Franç
 [Sveltia CMS](https://sveltiacms.app), sans base de données : chaque enregistrement crée un commit sur GitHub, et Netlify republie le site en une à deux minutes. Si une saisie est invalide, le build échoue et le site en ligne reste tel quel (*Deploys* sur Netlify pour voir l'erreur).
 
 - **Page d'accueil** : une fiche par section, dans l'ordre de la page (1. En-tête … 9. Appel à l'action), français et anglais côte à côte.
-- **Photos des sections** (en-tête, professeure, maison, région) : dans la fiche de la section, *Remplacer* sous la photo → *Téléverser* (ou choisir une photo déjà en ligne). La photo est convertie en WebP et réduite à 2400 px côté navigateur, rangée dans `src/assets/`, puis déclinée en plusieurs tailles au build. Elle vaut pour les deux langues ; penser à mettre à jour la *Description de la photo* en français et en anglais. Les anciennes photos restent dans `src/assets/` (rubrique « Ressources » de l'admin) et peuvent y être supprimées.
+- **Photos des sections** (en-tête, professeure, région) : dans la fiche de la section, *Remplacer* sous la photo → *Téléverser* (ou choisir une photo déjà en ligne). La photo est convertie en WebP et réduite à 2400 px côté navigateur, rangée dans `src/assets/`, puis déclinée en plusieurs tailles au build. Elle vaut pour les deux langues ; penser à mettre à jour la *Description de la photo* en français et en anglais. Les anciennes photos restent dans `src/assets/` (rubrique « Ressources » de l'admin) et peuvent y être supprimées.
+- **La maison — galerie** : les photos de la grille de la maison, une seule fiche pour les deux langues (légendes et descriptions en français et en anglais côte à côte). Pour chaque photo : *Taille* (normale, large, haute, grande 2 × 2) et *Cadrage* (partie de la photo gardée visible quand elle est découpée pour remplir sa case). Glisser les photos pour changer l'ordre, *Ajouter photo* pour en ajouter. L'aperçu à droite montre l'agencement sur ordinateur et sur téléphone, cases vides en pointillés rouges ; il est dessiné par `public/admin/gallery-preview.js`, qui reprend la règle de placement de la grille du site (`.gallery`, `grid-auto-flow: dense`).
 - **Page contact** : titre et introduction.
 - **Coordonnées** : téléphone, e-mail, adresse, modifiés partout d'un coup.
 - **Référencement Google** : titres et descriptions des pages dans Google, à modifier avec prudence.

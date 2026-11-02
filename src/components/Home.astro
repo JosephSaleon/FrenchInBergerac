@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { SITE, ROUTES, type Lang } from '../config';
-import { getHome, getSeo, CONTACT } from '../site-content';
+import { getHome, getSeo, getGallery, CONTACT } from '../site-content';
 import Base from '../layouts/Base.astro';
 
 interface Props {
@@ -20,14 +20,7 @@ const price = new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-GB', {
   maximumFractionDigits: 0,
 }).format(d.stay.price);
 
-const gallery = [
-  { src: d.house.photos.salon.image, alt: d.house.photos.salon.alt, cap: d.house.photos.salon.caption, cls: 'g-tall' },
-  { src: d.house.photos.chambre.image, alt: d.house.photos.chambre.alt, cap: d.house.photos.chambre.caption, cls: 'g-wide' },
-  { src: d.house.photos.jardin.image, alt: d.house.photos.jardin.alt, cap: d.house.photos.jardin.caption, cls: '' },
-  { src: d.house.photos.sde2.image, alt: d.house.photos.sde2.alt, cap: d.house.photos.sde2.caption, cls: '' },
-  { src: d.house.photos.velos.image, alt: d.house.photos.velos.alt, cap: d.house.photos.velos.caption, cls: 'g-wide' },
-  { src: d.house.photos.sde1.image, alt: d.house.photos.sde1.alt, cap: d.house.photos.sde1.caption, cls: '' },
-];
+const gallery = getGallery(lang);
 
 const jsonLd = [
   {
@@ -184,10 +177,16 @@ const jsonLd = [
       </div>
       <ul class="gallery">
         {gallery.map((g) => (
-          <li class={g.cls}>
+          <li class={`g-${g.size}`}>
             <figure>
-              <Image src={g.src} alt={g.alt} widths={[320, 480, 720]} sizes="(min-width: 900px) 30vw, 50vw" />
-              <figcaption>{g.cap}</figcaption>
+              <Image
+                src={g.image}
+                alt={g.alt}
+                widths={g.size === 'normal' ? [320, 480, 720] : [480, 720, 960, 1440]}
+                sizes={g.size === 'normal' ? '(min-width: 900px) 30vw, 50vw' : '(min-width: 900px) 60vw, 100vw'}
+                style={`object-position: ${g.focus}`}
+              />
+              <figcaption>{g.caption}</figcaption>
             </figure>
           </li>
         ))}

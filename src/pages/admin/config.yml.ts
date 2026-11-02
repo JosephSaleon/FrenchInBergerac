@@ -46,12 +46,6 @@ const image = (name: string, label: string): Field => ({
   accept: 'image/jpeg,image/png,image/webp',
   hint: 'Cliquer sur « Remplacer » pour choisir une autre photo (elle est redimensionnée et optimisée automatiquement), puis mettre à jour sa description juste en dessous, en français et en anglais.',
 });
-const photo = (name: string, label: string) =>
-  group(name, label, [
-    image('image', 'Photo'),
-    str('caption', 'Légende'),
-    str('alt', 'Description de la photo', 'Ce que montre la photo, pour Google et les personnes malvoyantes'),
-  ]);
 
 // Page d'accueil : une fiche par section, dans l'ordre de la page (src/content/home/<section>.<langue>.json)
 const homeSections: { name: string; label: string; fields: Field[] }[] = [
@@ -127,20 +121,7 @@ const homeSections: { name: string; label: string; fields: Field[] }[] = [
     label: '5. La maison',
     fields: [
       str('title', 'Titre'),
-      txt('lead', 'Introduction'),
-      group(
-        'photos',
-        'Photos',
-        [
-          photo('salon', 'Salon'),
-          photo('chambre', 'Chambre'),
-          photo('sde1', 'Salle d’eau'),
-          photo('sde2', 'Salle d’eau attenante'),
-          photo('jardin', 'Jardin'),
-          photo('velos', 'Vélos'),
-        ],
-        { collapsed: false },
-      ),
+      txt('lead', 'Introduction', 'Les photos se règlent dans la rubrique « La maison — galerie ».'),
     ],
   },
   {
@@ -183,8 +164,74 @@ const seoPage = (name: string, label: string) =>
     { collapsed: false },
   );
 
-// Coordonnées : identiques dans les deux langues (pied de page, page contact, données pour Google)
 const plain = (name: string, label: string, extra: Field = {}): Field => ({ name, label, widget: 'string', ...extra });
+
+// Galerie de la maison : une seule fiche pour les deux langues (même ordre, mêmes tailles),
+// les légendes et descriptions étant saisies côte à côte. L'aperçu de l'agencement est
+// dessiné par public/admin/gallery-preview.js
+const choice = (name: string, label: string, options: [string, string][], hint: string): Field => ({
+  name,
+  label,
+  widget: 'select',
+  default: options[0][0],
+  options: options.map(([value, label]) => ({ value, label })),
+  hint,
+});
+const galleryFields: Field[] = [
+  {
+    name: 'photos',
+    label: 'Photos',
+    label_singular: 'photo',
+    widget: 'list',
+    min: 1,
+    collapsed: true,
+    summary: '{{captionFr}}',
+    hint: 'Glisser les photos pour changer leur ordre dans la grille. Aperçu de l’agencement à droite.',
+    fields: [
+      {
+        name: 'image',
+        label: 'Photo',
+        widget: 'image',
+        media_folder: '/src/assets',
+        public_folder: '/src/assets',
+        accept: 'image/jpeg,image/png,image/webp',
+      },
+      choice(
+        'size',
+        'Taille dans la grille',
+        [
+          ['normal', 'Normale (1 case)'],
+          ['wide', 'Large (2 cases en largeur)'],
+          ['tall', 'Haute (2 cases en hauteur)'],
+          ['big', 'Grande (2 × 2 cases)'],
+        ],
+        'Large pour une photo en paysage, Haute pour une photo verticale.',
+      ),
+      choice(
+        'focus',
+        'Cadrage',
+        [
+          ['center', 'Centre'],
+          ['top', 'Haut'],
+          ['bottom', 'Bas'],
+          ['left', 'Gauche'],
+          ['right', 'Droite'],
+          ['top left', 'Haut gauche'],
+          ['top right', 'Haut droite'],
+          ['bottom left', 'Bas gauche'],
+          ['bottom right', 'Bas droite'],
+        ],
+        'La photo est découpée pour remplir sa case : partie à garder visible.',
+      ),
+      plain('captionFr', 'Légende (français)'),
+      plain('captionEn', 'Légende (anglais)'),
+      plain('altFr', 'Description de la photo (français)', { hint: 'Ce que montre la photo, pour Google et les personnes malvoyantes' }),
+      plain('altEn', 'Description de la photo (anglais)'),
+    ],
+  },
+];
+
+// Coordonnées : identiques dans les deux langues (pied de page, page contact, données pour Google)
 const coordinatesFields: Field[] = [
   plain('phone', 'Téléphone', { hint: 'Format : 06 12 34 56 78', pattern: ['^0\\d( ?\\d{2}){4}$', 'Format attendu : 06 12 34 56 78'] }),
   plain('email', 'E-mail'),
@@ -264,6 +311,20 @@ const config = {
         i18n: true,
         fields,
       })),
+    },
+    // rubrique à part : Sveltia n'affiche pas une fiche non traduite dans une rubrique traduite
+    {
+      name: 'galerie',
+      label: 'La maison — galerie',
+      files: [
+        {
+          name: 'house-gallery',
+          label: 'Photos de la maison',
+          file: 'src/content/home/house-gallery.json',
+          format: 'json',
+          fields: galleryFields,
+        },
+      ],
     },
     {
       name: 'contact',

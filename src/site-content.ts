@@ -17,7 +17,6 @@ const image = z
   .transform((path) => assets[path]);
 
 const text = z.string().min(1);
-const photo = z.object({ image, caption: text, alt: text });
 const seoEntry = z.object({ title: text, description: text });
 
 // Page d'accueil : src/content/home/<section>.<langue>.json, dans l'ordre de la page
@@ -61,11 +60,7 @@ const homeSchemas = {
     yoga: z.string(),
     yogaCredential: z.string(),
   }),
-  house: z.object({
-    title: text,
-    lead: text,
-    photos: z.object({ salon: photo, chambre: photo, sde1: photo, sde2: photo, jardin: photo, velos: photo }),
-  }),
+  house: z.object({ title: text, lead: text }),
   region: z.object({ title: text, p1: text, p2: z.string(), photo: image, photoAlt: text }),
   reviews: z.object({
     title: text,
@@ -75,6 +70,26 @@ const homeSchemas = {
   faq: z.object({ title: text, items: z.array(z.object({ question: text, answer: text })) }),
   cta: z.object({ title: text, text, button: text }),
 };
+
+// Galerie de la maison : src/content/home/house-gallery.json, commune aux deux langues
+// (ordre, taille et cadrage identiques), avec légende et description dans chaque langue
+export const GALLERY_SIZES = ['normal', 'wide', 'tall', 'big'] as const;
+export const GALLERY_FOCUS = ['center', 'top', 'bottom', 'left', 'right', 'top left', 'top right', 'bottom left', 'bottom right'] as const;
+const gallerySchema = z.object({
+  photos: z
+    .array(
+      z.object({
+        image,
+        size: z.enum(GALLERY_SIZES).default('normal'),
+        focus: z.enum(GALLERY_FOCUS).default('center'),
+        captionFr: text,
+        captionEn: text,
+        altFr: text,
+        altEn: text,
+      }),
+    )
+    .min(1),
+});
 
 const contactSchema = z.object({ title: text, lead: text });
 const seoSchema = z.object({ home: seoEntry, contact: seoEntry, blog: seoEntry });
@@ -103,6 +118,14 @@ export const getHome = (lang: Lang) =>
     Object.entries(homeSchemas).map(([section, schema]) => [section, load(`home/${section}.${lang}.json`, schema)]),
   ) as Home;
 
+export const getGallery = (lang: Lang) =>
+  load('home/house-gallery.json', gallerySchema).photos.map((p) => ({
+    image: p.image,
+    size: p.size,
+    focus: p.focus,
+    caption: lang === 'fr' ? p.captionFr : p.captionEn,
+    alt: lang === 'fr' ? p.altFr : p.altEn,
+  }));
 export const getContact = (lang: Lang) => load(`contact/contact.${lang}.json`, contactSchema);
 export const getSeo = (lang: Lang) => load(`settings/seo.${lang}.json`, seoSchema);
 

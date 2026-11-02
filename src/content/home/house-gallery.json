@@ -1,0 +1,58 @@
+{
+  "photos": [
+    {
+      "image": "/src/assets/salon-vue-jardin.webp",
+      "size": "tall",
+      "focus": "center",
+      "captionFr": "Le salon",
+      "captionEn": "Living room",
+      "altFr": "Le salon lumineux du rez-de-chaussée",
+      "altEn": "The bright ground-floor living room"
+    },
+    {
+      "image": "/src/assets/chambre-premier-rue.webp",
+      "size": "wide",
+      "focus": "center",
+      "captionFr": "Une chambre",
+      "captionEn": "Bedroom",
+      "altFr": "Une chambre d’hôte avec lit double",
+      "altEn": "A guest bedroom with a double bed"
+    },
+    {
+      "image": "/src/assets/jardin-depuis-veranda.webp",
+      "size": "normal",
+      "focus": "center",
+      "captionFr": "Le jardin",
+      "captionEn": "Garden",
+      "altFr": "Le jardin avec sa table et ses chaises en fer forgé",
+      "altEn": "The garden with its wrought-iron table and chairs"
+    },
+    {
+      "image": "/src/assets/salle-d-eau-2.jpg",
+      "size": "normal",
+      "focus": "center",
+      "captionFr": "Salle d’eau attenante",
+      "captionEn": "En-suite shower room",
+      "altFr": "La salle d’eau attenante à la chambre",
+      "altEn": "The en-suite shower room"
+    },
+    {
+      "image": "/src/assets/velos.jpg",
+      "size": "wide",
+      "focus": "center",
+      "captionFr": "Les vélos",
+      "captionEn": "Bicycles",
+      "altFr": "Les vélos à disposition dans le jardin",
+      "altEn": "Bicycles available in the garden"
+    },
+    {
+      "image": "/src/assets/salle-d-eau-1.jpg",
+      "size": "normal",
+      "focus": "center",
+      "captionFr": "La salle d’eau",
+      "captionEn": "Shower room",
+      "altFr": "La salle d’eau avec douche",
+      "altEn": "The shower room"
+    }
+  ]
+}
