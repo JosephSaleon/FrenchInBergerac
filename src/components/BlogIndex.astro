@@ -1,0 +1,75 @@
+---
+import { Image } from 'astro:assets';
+import { ROUTES, SITE, type Lang } from '../config';
+import { t } from '../i18n';
+import { getPosts, postPath, formatDate } from '../blog';
+import Base from '../layouts/Base.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = t(lang);
+const posts = await getPosts(lang);
+const pageUrl = new URL(ROUTES.blog[lang], SITE.url).href;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: `${d.blog.title} – ${SITE.name}`,
+    url: pageUrl,
+    inLanguage: lang,
+    blogPost: posts.map(({ post, slug }) => ({
+      '@type': 'BlogPosting',
+      headline: post.data.title,
+      url: new URL(postPath(lang, slug), SITE.url).href,
+      datePublished: post.data.date.toISOString(),
+    })),
+  },
+];
+---
+
+<!-- Tant qu'aucun article n'est publié, la page n'est pas indexée (contenu vide) -->
+<Base
+  lang={lang}
+  route="blog"
+  title={d.blog.metaTitle}
+  description={d.blog.metaDescription}
+  noindex={posts.length === 0}
+  jsonLd={posts.length ? jsonLd : []}
+>
+  <section class="section blog-index">
+    <div class="wrap">
+      <div class="section-head">
+        <h1>{d.blog.title}</h1>
+        <p class="lead">{d.blog.lead}</p>
+      </div>
+      {posts.length === 0 && <p class="muted">{d.blog.empty}</p>}
+      <ul class="post-list">
+        {posts.map(({ post, slug }, i) => (
+          <li>
+            <article class="post-card">
+              {post.data.cover && (
+                <Image
+                  src={post.data.cover}
+                  alt={post.data.coverAlt ?? ''}
+                  widths={[360, 540, 720]}
+                  sizes="(min-width: 900px) 30vw, 90vw"
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                />
+              )}
+              <div class="post-card-body">
+                <p class="post-date"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, lang)}</time></p>
+                <h2 class="h3"><a href={postPath(lang, slug)}>{post.data.title}</a></h2>
+                <p>{post.data.description}</p>
+                <span class="post-more" aria-hidden="true">{d.blog.readMore} →</span>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

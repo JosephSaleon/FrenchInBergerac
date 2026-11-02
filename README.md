@@ -17,9 +17,14 @@ npm run build:preview   # version non indexable dans dist-preview/
 
 | Fichier | Rôle |
 |---|---|
-| `src/i18n.ts` | **Tous les textes FR et EN.** C'est ici qu'on modifie un texte ou un prix affiché. |
-| `src/config.ts` | Coordonnées, prix (données structurées), correspondance des URLs FR/EN |
+| `src/content/home/home.fr.json`, `home.en.json` | **Textes de la page d'accueil** (et prix), modifiables depuis `/admin` |
+| `src/content/blog/<article>/` | **Articles du blog** : `index.fr.md`, `index.en.md` (facultatif) et leurs photos |
+| `src/content.config.ts` | Schémas des contenus : une saisie invalide fait échouer le build (le site en ligne reste intact) |
+| `src/pages/admin/config.yml.ts` | Configuration de l'admin (champs proposés à l'édition), à garder cohérente avec les schémas |
+| `src/i18n.ts` | Textes fixes de l'interface (menu, formulaire, blog, pied de page) |
+| `src/config.ts` | Coordonnées, correspondance des URLs FR/EN |
 | `src/components/Home.astro` | Structure de la page d'accueil et données structurées (JSON-LD) |
+| `src/components/Blog*.astro`, `src/blog.ts` | Liste des articles et page d'article |
 | `src/components/Contact.astro` | Page contact et formulaire (Netlify Forms) |
 | `src/styles/global.css` | Design (couleurs en variables en haut du fichier) |
 | `src/assets/` | Photos sources (redimensionnées et converties automatiquement au build) |
@@ -38,6 +43,9 @@ npm run build:preview   # version non indexable dans dist-preview/
 | `/contact` | Contact FR | **identique à l'ancien site** |
 | `/en/` | Accueil EN (`/en` redirige vers `/en/`) | nouveau |
 | `/en/contact` | Contact EN | nouveau |
+| `/blog/`, `/en/blog/` | Liste des articles | non indexée et hors sitemap tant qu'elle est vide |
+| `/blog/<article>`, `/en/blog/<article>` | Article (la version anglaise est facultative) | nouveau |
+| `/admin/` | Espace d'administration | non indexé |
 | `/merci`, `/en/thank-you` | Confirmation du formulaire | non indexées |
 | 2 anciennes pages « blog » Hostinger | – | redirection 301 vers `/` |
 
@@ -65,6 +73,26 @@ Ils viennent de l'autocomplétion Google (UK et US pour l'anglais, France pour l
 | FR | *séjours linguistiques immersifs Bergerac* (existant, conservé), *cours de français pour étrangers*, *FLE*, *apprendre le français en immersion*, *cours de français Bergerac* | title, description, H1, H2, FAQ |
 
 En français, « séjour linguistique adulte » est surtout tapé par des Français qui partent à l'étranger. C'est pour ça que la version FR vise aussi « cours de français (FLE) » et « pour étrangers ».
+
+## Espace d'administration (`/admin`)
+[Sveltia CMS](https://sveltiacms.app), sans base de données : chaque enregistrement crée un commit sur GitHub, et Netlify republie le site en une à deux minutes. Si une saisie est invalide, le build échoue et le site en ligne reste tel quel (*Deploys* sur Netlify pour voir l'erreur).
+
+- **Page d'accueil** : *Pages* → *Page d'accueil*, français et anglais côte à côte.
+- **Blog** : *Blog* → *Nouvel article*. Un article est créé en français ; pour ajouter l'anglais, menu ⋮ de l'éditeur → activer *English*. Le lien « Blog » apparaît dans le menu dès le premier article publié. Case *Brouillon* : l'article est enregistré mais pas publié.
+- Les photos ajoutées dans un article sont rangées avec lui et optimisées automatiquement (WebP, plusieurs tailles). L'image de partage (réseaux sociaux) est générée à partir de la photo de couverture.
+
+**Mise en place, une seule fois**
+1. **GitHub** → *Settings* → *Developer settings* → *OAuth Apps* → *New OAuth App* :
+   - *Homepage URL* : l'adresse du site sur Netlify ;
+   - *Authorization callback URL* : `https://api.netlify.com/auth/done`.
+   Note le *Client ID* et génère un *Client secret*.
+2. **Netlify** → *Project configuration* → *Access & security* → **OAuth** (pas *Identity*) → *Install provider* → *GitHub* : colle le *Client ID* et le *Client secret*.
+3. **Accès de Clotilde** : elle crée un compte GitHub gratuit ; sur le dépôt → *Settings* → *Collaborators* → *Add people* (droit d'écriture). Elle accepte l'invitation reçue par e-mail.
+4. Connexion : `https://<site>/admin/` → *Se connecter avec GitHub*.
+
+Après la bascule du domaine, l'admin est à `https://frenchinbergerac.net/admin/`, sans autre réglage.
+
+Sveltia est chargé depuis unpkg avec une version figée dans `public/admin/index.html` : la mettre à jour de temps en temps, après lecture du changelog.
 
 ---
 
@@ -114,6 +142,6 @@ En français, « séjour linguistique adulte » est surtout tapé par des Franç
 - **Annuaires du secteur** (liens entrants) : FLE.fr, languagecourse.net (catégorie *live with teacher*), GoOverseas, AngloInfo Dordogne.
 
 ## À valider avec la cliente
-- Les textes de `src/i18n.ts`, en particulier la mention « pour adultes », la FAQ et la version anglaise (idéalement relue par une personne anglophone).
+- Les textes de la page d'accueil (modifiables depuis `/admin`), en particulier la mention « pour adultes », la FAQ et la version anglaise (idéalement relue par une personne anglophone).
 - Les mentions légales : obligatoires pour un site professionnel en France (nom, statut, SIRET, hébergeur Netlify). Il faut une page dédiée.
 - Des photos en haute définition si possible, surtout pour la grande photo d'accueil, aujourd'hui en 868 px de large.

@@ -1,6 +1,7 @@
 ---
 import { SITE, ROUTES, type Lang } from '../config';
 import { t } from '../i18n';
+import { getPosts } from '../blog';
 
 interface Props {
   lang: Lang;
@@ -8,6 +9,8 @@ interface Props {
 
 const { lang } = Astro.props;
 const d = t(lang);
+// Le menu du haut est masqué sur mobile : le blog est aussi accessible ici
+const hasPosts = (await getPosts(lang)).length > 0;
 ---
 
 <footer class="site-footer">
@@ -25,6 +28,7 @@ const d = t(lang);
     <nav aria-label={lang === 'fr' ? 'Langues' : 'Languages'} class="footer-langs">
       <a href={ROUTES.home.fr} hreflang="fr" lang="fr" aria-current={lang === 'fr' ? 'true' : undefined}>Français</a>
       <a href={ROUTES.home.en} hreflang="en" lang="en" aria-current={lang === 'en' ? 'true' : undefined}>English</a>
+      {hasPosts && <a class="footer-blog" href={ROUTES.blog[lang]}>{d.nav.blog}</a>}
     </nav>
   </div>
   <p class="wrap footer-legal">© {new Date().getFullYear()} {SITE.name}</p>

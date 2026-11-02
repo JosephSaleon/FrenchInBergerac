@@ -22,8 +22,8 @@ RewriteRule ^ /%1 [L,R=301]
 RewriteCond %{DOCUMENT_ROOT}/$1.html -f
 RewriteRule ^(.+)/$ /$1 [L,R=301]
 
-# 4. Accueil anglais : /en -> /en/ (DirectorySlash Off le ferait sinon échouer)
-RewriteRule ^en$ /en/ [L,R=301]
+# 4. Index de dossier : /en -> /en/, /blog -> /blog/ (DirectorySlash Off le ferait sinon échouer)
+RewriteRule ^(en|blog|en/blog|admin)$ /$1/ [L,R=301]
 
 # 5. Sert le fichier .html correspondant (/contact -> contact.html)
 RewriteCond %{REQUEST_FILENAME} !-f

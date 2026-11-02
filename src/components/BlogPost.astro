@@ -1,0 +1,73 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import { ROUTES, SITE, type Lang } from '../config';
+import { t } from '../i18n';
+import { getPostPaths, postPath, formatDate, type Post } from '../blog';
+import Base from '../layouts/Base.astro';
+
+interface Props {
+  lang: Lang;
+  post: Post;
+  slug: string;
+}
+
+const { lang, post, slug } = Astro.props;
+const d = t(lang);
+const { title, description, date, cover, coverAlt } = post.data;
+const { Content } = await render(post);
+const paths = await getPostPaths(slug);
+const url = new URL(postPath(lang, slug), SITE.url).href;
+
+// Image de partage (réseaux sociaux) : la photo de couverture recadrée en 1200×630
+const share = cover ? await getImage({ src: cover, width: 1200, height: 630, fit: 'cover', format: 'jpg' }) : undefined;
+const image = share && { src: share.src, width: 1200, height: 630, alt: coverAlt ?? title };
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    description,
+    datePublished: date.toISOString(),
+    inLanguage: lang,
+    url,
+    mainEntityOfPage: url,
+    ...(image && { image: new URL(image.src, SITE.url).href }),
+    author: { '@type': 'Person', name: SITE.teacher },
+    publisher: { '@id': `${SITE.url}/#organisation` },
+  },
+];
+---
+
+<Base lang={lang} paths={paths} title={`${title} | ${SITE.name}`} description={description} jsonLd={jsonLd} image={image} ogType="article">
+  <article class="section post">
+    <div class="wrap narrow">
+      <p class="post-back"><a href={ROUTES.blog[lang]}>← {d.blog.back}</a></p>
+      <h1>{title}</h1>
+      <p class="post-date"><time datetime={date.toISOString()}>{formatDate(date, lang)}</time> · {SITE.teacher}</p>
+      {cover && (
+        <figure class="post-cover">
+          <Image
+            src={cover}
+            alt={coverAlt ?? ''}
+            widths={[400, 720, 1040]}
+            sizes="(min-width: 800px) 720px, 100vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </figure>
+      )}
+      <div class="post-content prose">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <section class="section cta">
+    <div class="wrap narrow center">
+      <h2>{d.blog.ctaTitle}</h2>
+      <a class="btn" href={ROUTES.contact[lang]}>{d.blog.ctaButton}</a>
+    </div>
+  </section>
+</Base>

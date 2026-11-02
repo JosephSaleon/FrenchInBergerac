@@ -923,6 +923,112 @@ p {
   align-items: center;
 }
 
+/* ---------- Blog ---------- */
+.post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 32px;
+}
+.post-card {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  background: var(--paper-deep);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.post-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px -18px rgb(29 42 36 / 0.45);
+}
+.post-card img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+.post-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px 24px 28px;
+}
+.post-card h2 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+/* toute la carte est cliquable, via le lien du titre */
+.post-card h2 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.post-card h2 a:focus-visible {
+  outline: none;
+}
+.post-card:has(a:focus-visible) {
+  outline: 2px solid var(--terracotta);
+  outline-offset: 3px;
+}
+.post-more {
+  margin-top: auto;
+  font-weight: 600;
+  color: var(--terracotta-deep);
+}
+.post-date {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.6em;
+}
+.post h1 {
+  font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.4rem);
+}
+.post-back {
+  font-size: 0.95rem;
+  margin-bottom: 2em;
+}
+.post-cover {
+  margin: 2em 0 2.4em;
+}
+.post-cover img {
+  width: 100%;
+  border-radius: var(--radius);
+}
+.post-content {
+  font-size: 1.08rem;
+  line-height: 1.75;
+}
+.post-content h2 {
+  font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem);
+  margin-top: 1.6em;
+}
+.post-content h3 {
+  margin-top: 1.4em;
+}
+.post-content img {
+  margin: 1.8em 0;
+  border-radius: var(--radius);
+}
+.post-content ul,
+.post-content ol {
+  padding-left: 1.3em;
+  margin: 0 0 1.1em;
+}
+.post-content li {
+  margin-bottom: 0.4em;
+}
+.post-content blockquote {
+  margin: 1.6em 0;
+  padding-left: 1.2em;
+  border-left: 4px solid var(--ochre);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
 /* ---------- Pied de page ---------- */
 .site-footer {
   background: var(--river-deep);
@@ -956,6 +1062,9 @@ address {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+.footer-blog {
+  margin-top: 10px;
 }
 .footer-langs a[aria-current] {
   color: var(--ochre);

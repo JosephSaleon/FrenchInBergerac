@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { SITE, ROUTES, type Lang } from '../config';
-import { t } from '../i18n';
+import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
 import pont from '../assets/vieux-pont-bergerac.jpg';
@@ -19,22 +19,25 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const d = t(lang);
+// Textes modifiables depuis /admin : src/content/home/home.<langue>.json
+const entry = await getEntry('home', lang);
+if (!entry) throw new Error(`src/content/home/home.${lang}.json introuvable`);
+const d = entry.data;
 const contactHref = ROUTES.contact[lang];
 const pageUrl = new URL(ROUTES.home[lang], SITE.url).href;
 const price = new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-GB', {
   style: 'currency',
   currency: 'EUR',
   maximumFractionDigits: 0,
-}).format(SITE.priceWeek);
+}).format(d.stay.price);
 
 const gallery = [
-  { src: salon, alt: d.house.photos.salon, cap: d.house.captions.salon, cls: 'g-tall' },
-  { src: chambre, alt: d.house.photos.chambre, cap: d.house.captions.chambre, cls: 'g-wide' },
-  { src: jardin, alt: d.house.photos.jardin, cap: d.house.captions.jardin, cls: '' },
-  { src: sde2, alt: d.house.photos.sde2, cap: d.house.captions.sde2, cls: '' },
-  { src: velos, alt: d.house.photos.velos, cap: d.house.captions.velos, cls: 'g-wide' },
-  { src: sde1, alt: d.house.photos.sde1, cap: d.house.captions.sde1, cls: '' },
+  { src: salon, alt: d.house.photos.salon.alt, cap: d.house.photos.salon.caption, cls: 'g-tall' },
+  { src: chambre, alt: d.house.photos.chambre.alt, cap: d.house.photos.chambre.caption, cls: 'g-wide' },
+  { src: jardin, alt: d.house.photos.jardin.alt, cap: d.house.photos.jardin.caption, cls: '' },
+  { src: sde2, alt: d.house.photos.sde2.alt, cap: d.house.photos.sde2.caption, cls: '' },
+  { src: velos, alt: d.house.photos.velos.alt, cap: d.house.photos.velos.caption, cls: 'g-wide' },
+  { src: sde1, alt: d.house.photos.sde1.alt, cap: d.house.photos.sde1.caption, cls: '' },
 ];
 
 const jsonLd = [
@@ -44,7 +47,7 @@ const jsonLd = [
     '@id': `${SITE.url}/#organisation`,
     name: SITE.name,
     url: pageUrl,
-    description: d.meta.homeDescription,
+    description: d.seo.description,
     image: new URL('/og-image.jpg', SITE.url).href,
     telephone: SITE.phoneIntl,
     email: SITE.email,
@@ -64,7 +67,7 @@ const jsonLd = [
       '@type': 'Offer',
       name: d.stay.title,
       description: d.stay.includes.join(', '),
-      price: SITE.priceWeek,
+      price: d.stay.price,
       priceCurrency: 'EUR',
       url: pageUrl + '#sejour',
     },
@@ -80,16 +83,16 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     inLanguage: lang,
-    mainEntity: d.faq.items.map(([q, a]) => ({
+    mainEntity: d.faq.items.map(({ question, answer }) => ({
       '@type': 'Question',
-      name: q,
-      acceptedAnswer: { '@type': 'Answer', text: a },
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer },
     })),
   },
 ];
 ---
 
-<Base lang={lang} route="home" title={d.meta.homeTitle} description={d.meta.homeDescription} jsonLd={jsonLd}>
+<Base lang={lang} route="home" title={d.seo.title} description={d.seo.description} jsonLd={jsonLd}>
   <!-- HERO -->
   <section class="hero">
     <div class="wrap hero-grid">
@@ -102,8 +105,8 @@ const jsonLd = [
           <a class="btn btn-ghost" href="#sejour">{d.hero.ctaSecondary}</a>
         </div>
         <dl class="facts rise" style="--i:4">
-          {d.hero.facts.map(([n, l]) => (
-            <div><dt>{n}</dt><dd>{l}</dd></div>
+          {d.hero.facts.map(({ value, label }) => (
+            <div><dt>{value}</dt><dd>{label}</dd></div>
           ))}
         </dl>
       </div>
@@ -131,7 +134,7 @@ const jsonLd = [
       <div class="day">
         <h3>{d.day.title}</h3>
         <ol class="timeline">
-          {d.day.items.map(([when, what]) => (
+          {d.day.items.map(({ when, what }) => (
             <li><strong>{when}</strong><span>{what}</span></li>
           ))}
         </ol>
@@ -171,12 +174,14 @@ const jsonLd = [
         <ul class="badges">{d.teacher.badges.map((b) => <li>{b}</li>)}</ul>
         <p>{d.teacher.p1}</p>
         <p>{d.teacher.p2}</p>
-        <p>{d.teacher.p3}</p>
-        <aside class="yoga" aria-labelledby="yoga-title">
-          <h3 id="yoga-title">{d.teacher.yogaTitle}</h3>
-          <p>{d.teacher.yoga}</p>
-          <p class="yoga-credential">{d.teacher.yogaCredential}</p>
-        </aside>
+        {d.teacher.p3 && <p>{d.teacher.p3}</p>}
+        {d.teacher.yoga && (
+          <aside class="yoga" aria-labelledby="yoga-title">
+            <h3 id="yoga-title">{d.teacher.yogaTitle}</h3>
+            <p>{d.teacher.yoga}</p>
+            {d.teacher.yogaCredential && <p class="yoga-credential">{d.teacher.yogaCredential}</p>}
+          </aside>
+        )}
       </div>
     </div>
   </section>
@@ -207,7 +212,7 @@ const jsonLd = [
       <div class="prose">
         <h2 id="region-title">{d.region.title}</h2>
         <p>{d.region.p1}</p>
-        <p>{d.region.p2}</p>
+        {d.region.p2 && <p>{d.region.p2}</p>}
       </div>
       <figure class="region-photo">
         <Image src={fresque} alt={d.region.photoAlt} widths={[360, 540, 707]} sizes="(min-width: 900px) 40vw, 90vw" />
@@ -224,7 +229,7 @@ const jsonLd = [
           <figure class="review">
             <p class="stars" aria-label="5/5">★★★★★</p>
             <blockquote><p>{r.text}</p></blockquote>
-            <figcaption><strong>{r.name}</strong> · {r.from}</figcaption>
+            <figcaption><strong>{r.name}</strong>{r.from && ` · ${r.from}`}</figcaption>
           </figure>
         ))}
       </div>
@@ -236,10 +241,10 @@ const jsonLd = [
   <section class="section faq" aria-labelledby="faq-title">
     <div class="wrap narrow">
       <h2 id="faq-title">{d.faq.title}</h2>
-      {d.faq.items.map(([q, a]) => (
+      {d.faq.items.map(({ question, answer }) => (
         <details>
-          <summary>{q}</summary>
-          <p>{a}</p>
+          <summary>{question}</summary>
+          <p>{answer}</p>
         </details>
       ))}
     </div>

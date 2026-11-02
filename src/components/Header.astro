@@ -1,13 +1,15 @@
 ---
-import { ROUTES, type Lang, type RouteKey } from '../config';
+import { ROUTES, type Lang } from '../config';
 import { t } from '../i18n';
+import { getPosts } from '../blog';
 
 interface Props {
   lang: Lang;
-  route?: RouteKey;
+  /** la même page dans l'autre langue ; à défaut, l'accueil de l'autre langue */
+  otherHref?: string;
 }
 
-const { lang, route } = Astro.props;
+const { lang } = Astro.props;
 const d = t(lang);
 const other: Lang = lang === 'fr' ? 'en' : 'fr';
 const home = ROUTES.home[lang];
@@ -18,7 +20,9 @@ const links = [
   { href: anchor('professeure'), label: d.nav.teacher },
   { href: anchor('avis'), label: d.nav.reviews },
 ];
-const otherHref = ROUTES[route ?? 'home'][other];
+// Le lien Blog n'apparaît qu'une fois un article publié dans cette langue
+if ((await getPosts(lang)).length) links.push({ href: ROUTES.blog[lang], label: d.nav.blog });
+const otherHref = Astro.props.otherHref ?? ROUTES.home[other];
 ---
 
 <header class="site-header">

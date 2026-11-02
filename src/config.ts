@@ -10,7 +10,6 @@ export const SITE = {
   postalCode: '24100',
   city: 'Bergerac',
   region: 'Nouvelle-Aquitaine',
-  priceWeek: 1270,
 };
 
 export type Lang = 'fr' | 'en';
@@ -20,6 +19,11 @@ export const ROUTES = {
   home: { fr: '/', en: '/en/' },
   contact: { fr: '/contact', en: '/en/contact' },
   thanks: { fr: '/merci', en: '/en/thank-you' },
+  // dossier blog/ : comme /en/, l'index est servi avec un slash final
+  blog: { fr: '/blog/', en: '/en/blog/' },
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;
+
+// Adresse d'une page dans chaque langue où elle existe (un article peut n'exister qu'en français)
+export type Paths = Partial<Record<Lang, string>>;

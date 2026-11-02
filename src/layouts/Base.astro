@@ -2,7 +2,7 @@
 import '@fontsource/young-serif/latin-400.css';
 import '@fontsource-variable/figtree/wght.css';
 import '../styles/global.css';
-import { SITE, ROUTES, type Lang, type RouteKey } from '../config';
+import { SITE, ROUTES, type Lang, type Paths, type RouteKey } from '../config';
 import { t } from '../i18n';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -11,26 +11,39 @@ import LangBanner from '../components/LangBanner.astro';
 interface Props {
   lang: Lang;
   route?: RouteKey;
+  /** à la place de route, pour les pages dynamiques (articles du blog) */
+  paths?: Paths;
   title: string;
   description?: string;
   noindex?: boolean;
   jsonLd?: object[];
+  /** image de partage propre à la page (sinon og-image.jpg) */
+  image?: { src: string; width: number; height: number; alt: string };
+  ogType?: 'website' | 'article';
 }
 
-const { lang, route, title, description, jsonLd = [] } = Astro.props;
+const { lang, route, title, description, jsonLd = [], ogType = 'website' } = Astro.props;
 // Aperçu ou site pas encore sur son domaine : jamais indexé (voir astro.config.mjs)
 const noindex = Astro.props.noindex || __NOINDEX__;
 const d = t(lang);
-const canonical = new URL(route ? ROUTES[route][lang] : Astro.url.pathname, SITE.url).href;
-const alternates = route
-  ? [
-      { hreflang: 'fr', href: new URL(ROUTES[route].fr, SITE.url).href },
-      { hreflang: 'en', href: new URL(ROUTES[route].en, SITE.url).href },
-      // Les visiteurs non francophones sont la cible principale : l'anglais sert de version par défaut
-      { hreflang: 'x-default', href: new URL(ROUTES[route].en, SITE.url).href },
-    ]
-  : [];
-const ogImage = new URL('/og-image.jpg', SITE.url).href;
+const paths: Paths | undefined = route ? ROUTES[route] : Astro.props.paths;
+const other: Lang = lang === 'fr' ? 'en' : 'fr';
+const otherPath = paths?.[other];
+const abs = (path: string) => new URL(path, SITE.url).href;
+const canonical = abs(paths?.[lang] ?? Astro.url.pathname);
+// hreflang seulement si la page existe dans les deux langues
+const alternates =
+  paths?.fr && paths.en
+    ? [
+        { hreflang: 'fr', href: abs(paths.fr) },
+        { hreflang: 'en', href: abs(paths.en) },
+        // Les visiteurs non francophones sont la cible principale : l'anglais sert de version par défaut
+        { hreflang: 'x-default', href: abs(paths.en) },
+      ]
+    : [];
+const og = Astro.props.image
+  ? { ...Astro.props.image, src: abs(Astro.props.image.src) }
+  : { src: abs('/og-image.jpg'), width: 1200, height: 630, alt: d.meta.ogAlt };
 ---
 
 <!doctype html>
@@ -43,17 +56,17 @@ const ogImage = new URL('/og-image.jpg', SITE.url).href;
     {noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonical} />}
     {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_GB'} />
-    <meta property="og:locale:alternate" content={lang === 'fr' ? 'en_GB' : 'fr_FR'} />
+    {otherPath && <meta property="og:locale:alternate" content={lang === 'fr' ? 'en_GB' : 'fr_FR'} />}
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={d.meta.ogAlt} />
+    <meta property="og:image" content={og.src} />
+    <meta property="og:image:width" content={String(og.width)} />
+    <meta property="og:image:height" content={String(og.height)} />
+    <meta property="og:image:alt" content={og.alt} />
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -65,8 +78,8 @@ const ogImage = new URL('/og-image.jpg', SITE.url).href;
   </head>
   <body>
     <a class="skip" href="#main">{d.skip}</a>
-    {route && <LangBanner lang={lang} route={route} />}
-    <Header lang={lang} route={route} />
+    {otherPath && <LangBanner lang={lang} otherHref={otherPath} />}
+    <Header lang={lang} otherHref={otherPath} />
     <main id="main">
       <slot />
     </main>
