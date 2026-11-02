@@ -82,6 +82,7 @@ En français, « séjour linguistique adulte » est surtout tapé par des Franç
 [Sveltia CMS](https://sveltiacms.app), sans base de données : chaque enregistrement crée un commit sur GitHub, et Netlify republie le site en une à deux minutes. Si une saisie est invalide, le build échoue et le site en ligne reste tel quel (*Deploys* sur Netlify pour voir l'erreur).
 
 - **Page d'accueil** : une fiche par section, dans l'ordre de la page (1. En-tête … 9. Appel à l'action), français et anglais côte à côte.
+- **Photos des sections** (en-tête, professeure, maison, région) : dans la fiche de la section, *Remplacer* sous la photo → *Téléverser* (ou choisir une photo déjà en ligne). La photo est convertie en WebP et réduite à 2400 px côté navigateur, rangée dans `src/assets/`, puis déclinée en plusieurs tailles au build. Elle vaut pour les deux langues ; penser à mettre à jour la *Description de la photo* en français et en anglais. Les anciennes photos restent dans `src/assets/` (rubrique « Ressources » de l'admin) et peuvent y être supprimées.
 - **Page contact** : titre et introduction.
 - **Coordonnées** : téléphone, e-mail, adresse, modifiés partout d'un coup.
 - **Référencement Google** : titres et descriptions des pages dans Google, à modifier avec prudence.

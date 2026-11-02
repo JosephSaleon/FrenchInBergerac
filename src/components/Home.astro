@@ -4,16 +4,6 @@ import { SITE, ROUTES, type Lang } from '../config';
 import { getHome, getSeo, CONTACT } from '../site-content';
 import Base from '../layouts/Base.astro';
 
-import pont from '../assets/vieux-pont-bergerac.jpg';
-import clotilde from '../assets/clotilde.jpg';
-import salon from '../assets/salon.jpg';
-import chambre from '../assets/chambre.jpg';
-import sde1 from '../assets/salle-d-eau-1.jpg';
-import sde2 from '../assets/salle-d-eau-2.jpg';
-import jardin from '../assets/jardin.jpg';
-import velos from '../assets/velos.jpg';
-import fresque from '../assets/fresque-bergerac.jpg';
-
 interface Props {
   lang: Lang;
 }
@@ -31,12 +21,12 @@ const price = new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-GB', {
 }).format(d.stay.price);
 
 const gallery = [
-  { src: salon, alt: d.house.photos.salon.alt, cap: d.house.photos.salon.caption, cls: 'g-tall' },
-  { src: chambre, alt: d.house.photos.chambre.alt, cap: d.house.photos.chambre.caption, cls: 'g-wide' },
-  { src: jardin, alt: d.house.photos.jardin.alt, cap: d.house.photos.jardin.caption, cls: '' },
-  { src: sde2, alt: d.house.photos.sde2.alt, cap: d.house.photos.sde2.caption, cls: '' },
-  { src: velos, alt: d.house.photos.velos.alt, cap: d.house.photos.velos.caption, cls: 'g-wide' },
-  { src: sde1, alt: d.house.photos.sde1.alt, cap: d.house.photos.sde1.caption, cls: '' },
+  { src: d.house.photos.salon.image, alt: d.house.photos.salon.alt, cap: d.house.photos.salon.caption, cls: 'g-tall' },
+  { src: d.house.photos.chambre.image, alt: d.house.photos.chambre.alt, cap: d.house.photos.chambre.caption, cls: 'g-wide' },
+  { src: d.house.photos.jardin.image, alt: d.house.photos.jardin.alt, cap: d.house.photos.jardin.caption, cls: '' },
+  { src: d.house.photos.sde2.image, alt: d.house.photos.sde2.alt, cap: d.house.photos.sde2.caption, cls: '' },
+  { src: d.house.photos.velos.image, alt: d.house.photos.velos.alt, cap: d.house.photos.velos.caption, cls: 'g-wide' },
+  { src: d.house.photos.sde1.image, alt: d.house.photos.sde1.alt, cap: d.house.photos.sde1.caption, cls: '' },
 ];
 
 const jsonLd = [
@@ -111,9 +101,9 @@ const jsonLd = [
       </div>
       <figure class="hero-photo arch rise" style="--i:2">
         <Image
-          src={pont}
+          src={d.hero.photo}
           alt={d.hero.photoAlt}
-          widths={[400, 600, 868]}
+          widths={[400, 600, 868, 1200, 1600]}
           sizes="(min-width: 900px) 42vw, 90vw"
           loading="eager"
           fetchpriority="high"
@@ -165,7 +155,7 @@ const jsonLd = [
   <section class="section teacher" id="professeure" aria-labelledby="teacher-title">
     <div class="wrap teacher-grid">
       <figure class="teacher-photo arch">
-        <Image src={clotilde} alt={d.teacher.photoAlt} widths={[360, 540, 720]} sizes="(min-width: 900px) 34vw, 80vw" />
+        <Image src={d.teacher.photo} alt={d.teacher.photoAlt} widths={[360, 540, 720, 1080]} sizes="(min-width: 900px) 34vw, 80vw" />
       </figure>
       <div class="prose">
         <p class="kicker">{d.teacher.kicker}</p>
@@ -214,7 +204,7 @@ const jsonLd = [
         {d.region.p2 && <p>{d.region.p2}</p>}
       </div>
       <figure class="region-photo">
-        <Image src={fresque} alt={d.region.photoAlt} widths={[360, 540, 707]} sizes="(min-width: 900px) 40vw, 90vw" />
+        <Image src={d.region.photo} alt={d.region.photoAlt} widths={[360, 540, 707, 1080]} sizes="(min-width: 900px) 40vw, 90vw" />
       </figure>
     </div>
   </section>

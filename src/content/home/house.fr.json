@@ -3,26 +3,32 @@
   "lead": "Une maison avec jardinet, à 5 minutes à pied de l’hyper-centre et à 5 minutes à vélo du parc de Pombonne. Les gares sont à 10 minutes à pied pour rayonner dans la région.",
   "photos": {
     "salon": {
+      "image": "/src/assets/salon.jpg",
       "caption": "Le salon",
       "alt": "Le salon lumineux du rez-de-chaussée"
     },
     "chambre": {
+      "image": "/src/assets/chambre.jpg",
       "caption": "Une chambre",
       "alt": "Une chambre d’hôte avec lit double"
     },
     "sde1": {
+      "image": "/src/assets/salle-d-eau-1.jpg",
       "caption": "La salle d’eau",
       "alt": "La salle d’eau avec douche"
     },
     "sde2": {
+      "image": "/src/assets/salle-d-eau-2.jpg",
       "caption": "Salle d’eau attenante",
       "alt": "La salle d’eau attenante à la chambre"
     },
     "jardin": {
+      "image": "/src/assets/jardin.jpg",
       "caption": "Le jardin",
       "alt": "Le jardin avec sa table et ses chaises en fer forgé"
     },
     "velos": {
+      "image": "/src/assets/velos.jpg",
       "caption": "Les vélos",
       "alt": "Les vélos à disposition dans le jardin"
     }

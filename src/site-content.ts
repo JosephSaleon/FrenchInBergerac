@@ -2,10 +2,22 @@
 // un fichier JSON par section et par langue. Chaque fichier est validé au build : une saisie
 // invalide fait échouer le déploiement Netlify, et la version en ligne reste alors inchangée.
 import { z } from 'astro/zod';
+import type { ImageMetadata } from 'astro';
 import type { Lang } from './config';
 
+// Photos des sections : rangées dans src/assets/ (l'admin y enregistre les nouvelles),
+// référencées dans les fichiers de contenu par leur chemin, ex. "/src/assets/salon.jpg"
+const assets = import.meta.glob<ImageMetadata>('/src/assets/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP}', {
+  eager: true,
+  import: 'default',
+});
+const image = z
+  .string()
+  .refine((path) => path in assets, { message: 'photo introuvable dans src/assets/' })
+  .transform((path) => assets[path]);
+
 const text = z.string().min(1);
-const photo = z.object({ caption: text, alt: text });
+const photo = z.object({ image, caption: text, alt: text });
 const seoEntry = z.object({ title: text, description: text });
 
 // Page d'accueil : src/content/home/<section>.<langue>.json, dans l'ordre de la page
@@ -16,6 +28,7 @@ const homeSchemas = {
     lead: text,
     cta: text,
     ctaSecondary: text,
+    photo: image,
     photoAlt: text,
     facts: z.array(z.object({ value: text, label: text })),
   }),
@@ -41,6 +54,7 @@ const homeSchemas = {
     p1: text,
     p2: text,
     p3: z.string(),
+    photo: image,
     photoAlt: text,
     badges: z.array(text),
     yogaTitle: z.string(),
@@ -52,7 +66,7 @@ const homeSchemas = {
     lead: text,
     photos: z.object({ salon: photo, chambre: photo, sde1: photo, sde2: photo, jardin: photo, velos: photo }),
   }),
-  region: z.object({ title: text, p1: text, p2: z.string(), photoAlt: text }),
+  region: z.object({ title: text, p1: text, p2: z.string(), photo: image, photoAlt: text }),
   reviews: z.object({
     title: text,
     items: z.array(z.object({ text, name: text, from: z.string() })),

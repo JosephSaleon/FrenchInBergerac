@@ -34,8 +34,24 @@ const stringList = (name: string, label: string, itemLabel: string): Field => ({
   i18n: true,
   field: { name: 'item', label: itemLabel, widget: 'string', i18n: true },
 });
+// Photo d'une section : la même dans les deux langues, seule sa description est traduite
+const image = (name: string, label: string): Field => ({
+  name,
+  label,
+  widget: 'image',
+  i18n: 'duplicate',
+  // enregistrée dans src/assets/, puis optimisée au build par Astro
+  media_folder: '/src/assets',
+  public_folder: '/src/assets',
+  accept: 'image/jpeg,image/png,image/webp',
+  hint: 'Cliquer sur « Remplacer » pour choisir une autre photo (elle est redimensionnée et optimisée automatiquement), puis mettre à jour sa description juste en dessous, en français et en anglais.',
+});
 const photo = (name: string, label: string) =>
-  group(name, label, [str('caption', 'Légende'), str('alt', 'Description de la photo', 'Pour Google et les personnes malvoyantes')]);
+  group(name, label, [
+    image('image', 'Photo'),
+    str('caption', 'Légende'),
+    str('alt', 'Description de la photo', 'Ce que montre la photo, pour Google et les personnes malvoyantes'),
+  ]);
 
 // Page d'accueil : une fiche par section, dans l'ordre de la page (src/content/home/<section>.<langue>.json)
 const homeSections: { name: string; label: string; fields: Field[] }[] = [
@@ -48,7 +64,8 @@ const homeSections: { name: string; label: string; fields: Field[] }[] = [
       txt('lead', 'Introduction'),
       str('cta', 'Bouton principal'),
       str('ctaSecondary', 'Bouton secondaire'),
-      str('photoAlt', 'Description de la photo', 'Pour Google et les personnes malvoyantes'),
+      image('photo', 'Photo'),
+      str('photoAlt', 'Description de la photo', 'Ce que montre la photo, pour Google et les personnes malvoyantes'),
       list('facts', 'Chiffres clés', [str('value', 'Chiffre'), str('label', 'Libellé')], { summary: '{{value}} {{label}}' }),
     ],
   },
@@ -98,7 +115,8 @@ const homeSections: { name: string; label: string; fields: Field[] }[] = [
       txt('p1', 'Paragraphe 1'),
       txt('p2', 'Paragraphe 2'),
       optional(txt('p3', 'Paragraphe 3')),
-      str('photoAlt', 'Description de la photo', 'Pour Google et les personnes malvoyantes'),
+      image('photo', 'Photo'),
+      str('photoAlt', 'Description de la photo', 'Ce que montre la photo, pour Google et les personnes malvoyantes'),
       optional(str('yogaTitle', 'Encadré yoga : titre')),
       optional(txt('yoga', 'Encadré yoga : texte', 'Laisser vide pour masquer l’encadré.')),
       optional(txt('yogaCredential', 'Encadré yoga : formation')),
@@ -128,7 +146,7 @@ const homeSections: { name: string; label: string; fields: Field[] }[] = [
   {
     name: 'region',
     label: '6. La région',
-    fields: [str('title', 'Titre'), txt('p1', 'Paragraphe 1'), optional(txt('p2', 'Paragraphe 2')), str('photoAlt', 'Description de la photo')],
+    fields: [str('title', 'Titre'), txt('p1', 'Paragraphe 1'), optional(txt('p2', 'Paragraphe 2')), image('photo', 'Photo'), str('photoAlt', 'Description de la photo', 'Ce que montre la photo, pour Google et les personnes malvoyantes')],
   },
   {
     name: 'reviews',
@@ -196,6 +214,17 @@ const config = {
   media_folder: 'public/uploads',
   public_folder: '/uploads',
   slug: { encoding: 'ascii', clean_accents: true },
+  // Photos envoyées depuis l'admin : nom de fichier nettoyé, converties en WebP et limitées
+  // à 2400 px (une photo de téléphone de 5 Mo pèse alors quelques centaines de Ko)
+  media_libraries: {
+    default: {
+      config: {
+        max_file_size: 25_000_000,
+        slugify_filename: true,
+        transformations: { raster_image: { format: 'webp', quality: 85, width: 2400, height: 2400 } },
+      },
+    },
+  },
   i18n: {
     structure: 'multiple_files',
     locales: ['fr', 'en'],
