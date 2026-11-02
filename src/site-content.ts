@@ -94,7 +94,7 @@ export const getSeo = (lang: Lang) => load(`settings/seo.${lang}.json`, seoSchem
 
 const coordinates = load('settings/coordonnees.json', coordinatesSchema);
 const digits = coordinates.phone.replace(/\D/g, '');
-/** Coordonnées : src/content/settings/coordonnees.json (Réglages → Coordonnées dans l'admin) */
+/** Coordonnées : src/content/settings/coordonnees.json (rubrique Coordonnées dans l'admin) */
 export const CONTACT = {
   ...coordinates,
   /** +33674607819, pour les liens tel: et les données structurées */

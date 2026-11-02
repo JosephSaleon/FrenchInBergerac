@@ -80,7 +80,7 @@ const homeSections: { name: string; label: string; fields: Field[] }[] = [
         widget: 'number',
         value_type: 'int',
         i18n: 'duplicate',
-        hint: 'Pensez aussi à mettre à jour la FAQ et la description Google (Réglages → Référencement Google).',
+        hint: 'Pensez aussi à mettre à jour la FAQ et la description Google (rubrique Référencement Google).',
       },
       str('priceLabel', 'Texte avant le prix'),
       str('pricePer', 'Texte après le prix'),
@@ -249,20 +249,30 @@ const config = {
         },
       ],
     },
+    // Coordonnées et référencement : deux rubriques séparées, car Sveltia n'affiche pas
+    // une fiche non traduite (coordonnées) dans une rubrique traduite (référencement)
     {
-      name: 'reglages',
-      label: 'Réglages',
+      name: 'coordonnees',
+      label: 'Coordonnées',
       files: [
         {
           name: 'coordonnees',
-          label: 'Coordonnées',
+          label: 'Téléphone, e-mail et adresse',
           file: 'src/content/settings/coordonnees.json',
           format: 'json',
           fields: coordinatesFields,
         },
+      ],
+    },
+    {
+      name: 'referencement',
+      label: 'Référencement Google',
+      // indispensable pour que {{locale}} soit remplacé dans le chemin du fichier
+      i18n: true,
+      files: [
         {
           name: 'seo',
-          label: 'Référencement Google',
+          label: 'Titres et descriptions dans Google',
           file: 'src/content/settings/seo.{{locale}}.json',
           format: 'json',
           i18n: true,

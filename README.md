@@ -83,7 +83,10 @@ En français, « séjour linguistique adulte » est surtout tapé par des Franç
 
 - **Page d'accueil** : une fiche par section, dans l'ordre de la page (1. En-tête … 9. Appel à l'action), français et anglais côte à côte.
 - **Page contact** : titre et introduction.
-- **Réglages** → *Coordonnées* (téléphone, e-mail, adresse : modifiés partout d'un coup) et *Référencement Google* (titres et descriptions des pages dans Google, à modifier avec prudence).
+- **Coordonnées** : téléphone, e-mail, adresse, modifiés partout d'un coup.
+- **Référencement Google** : titres et descriptions des pages dans Google, à modifier avec prudence.
+
+> Dans `src/pages/admin/config.yml.ts`, une rubrique dont le fichier contient `{{locale}}` doit avoir `i18n: true` au niveau de la rubrique. Sinon l'admin ne trouve pas le fichier et affiche des champs vides. Une fiche non traduite (comme les coordonnées) doit être dans une rubrique sans `i18n`.
 - **Blog** : *Blog* → *Nouvel article*. Un article est créé en français ; pour ajouter l'anglais, menu ⋮ de l'éditeur → activer *English*. Le lien « Blog » apparaît dans le menu dès le premier article publié. Case *Brouillon* : l'article est enregistré mais pas publié.
 - Les photos ajoutées dans un article sont rangées avec lui et optimisées automatiquement (WebP, plusieurs tailles). L'image de partage (réseaux sociaux) est générée à partir de la photo de couverture.
 
