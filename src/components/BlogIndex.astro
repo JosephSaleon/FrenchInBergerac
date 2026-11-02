@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import { ROUTES, SITE, type Lang } from '../config';
 import { t } from '../i18n';
 import { getPosts, postPath, formatDate } from '../blog';
+import { getSeo } from '../site-content';
 import Base from '../layouts/Base.astro';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 const { lang } = Astro.props;
 const d = t(lang);
 const posts = await getPosts(lang);
+const seo = getSeo(lang).blog;
 const pageUrl = new URL(ROUTES.blog[lang], SITE.url).href;
 
 const jsonLd = [
@@ -35,8 +37,8 @@ const jsonLd = [
 <Base
   lang={lang}
   route="blog"
-  title={d.blog.metaTitle}
-  description={d.blog.metaDescription}
+  title={seo.title}
+  description={seo.description}
   noindex={posts.length === 0}
   jsonLd={posts.length ? jsonLd : []}
 >

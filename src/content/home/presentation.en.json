@@ -1,0 +1,22 @@
+{
+  "title": "Learn French in France by living it",
+  "p1": "You want to practise French intensively, combining lessons with immersion in the local culture. You like being supported, but you also value your independence.",
+  "p2": "Welcome to my home in the centre of Bergerac: French lessons in the morning, and in the afternoon this town of art and history on the banks of the Dordogne is yours to explore — its museums, craftspeople, cafés, terraces, restaurants and the countryside close by.",
+  "day": {
+    "title": "A typical day",
+    "items": [
+      {
+        "when": "Morning",
+        "what": "French lessons, one-to-one or in a very small group, built around your goals and interests."
+      },
+      {
+        "when": "Afternoon",
+        "what": "Guided outings or time to explore on your own: museums, craft workshops, markets, the Dordogne riverbanks."
+      },
+      {
+        "when": "Evening",
+        "what": "Three friendly evenings during the week: the best time to speak French without even thinking about it."
+      }
+    ]
+  }
+}

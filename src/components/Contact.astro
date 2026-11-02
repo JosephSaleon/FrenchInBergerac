@@ -1,6 +1,7 @@
 ---
-import { SITE, ROUTES, type Lang } from '../config';
+import { ROUTES, type Lang } from '../config';
 import { t } from '../i18n';
+import { getContact, getSeo, CONTACT } from '../site-content';
 import Base from '../layouts/Base.astro';
 
 interface Props {
@@ -10,23 +11,25 @@ interface Props {
 const { lang } = Astro.props;
 const d = t(lang);
 const f = d.contact.form;
+const page = getContact(lang);
+const seo = getSeo(lang).contact;
 ---
 
-<Base lang={lang} route="contact" title={d.meta.contactTitle} description={d.meta.contactDescription}>
+<Base lang={lang} route="contact" title={seo.title} description={seo.description}>
   <section class="section contact">
     <div class="wrap contact-grid">
       <div>
-        <h1>{d.contact.title}</h1>
-        <p class="lead">{d.contact.lead}</p>
+        <h1>{page.title}</h1>
+        <p class="lead">{page.lead}</p>
         <div class="contact-card">
           <h2 class="h3">{d.contact.direct}</h2>
           <dl>
             <dt>{d.contact.phone}</dt>
-            <dd><a href={`tel:${SITE.phoneIntl}`}>{lang === 'fr' ? SITE.phoneDisplay : '+33 6 74 60 78 19'}</a></dd>
+            <dd><a href={`tel:${CONTACT.phoneIntl}`}>{lang === 'fr' ? CONTACT.phone : CONTACT.phoneIntlDisplay}</a></dd>
             <dt>{d.contact.email}</dt>
-            <dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd>
+            <dd><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></dd>
             <dt>{d.contact.address}</dt>
-            <dd>{SITE.street}<br />{SITE.postalCode} {SITE.city}, France</dd>
+            <dd>{CONTACT.street}<br />{CONTACT.postalCode} {CONTACT.city}, France</dd>
           </dl>
         </div>
       </div>

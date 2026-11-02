@@ -3,13 +3,8 @@ export const SITE = {
   name: 'French in Bergerac',
   url: 'https://frenchinbergerac.net',
   teacher: 'Clotilde',
-  phoneDisplay: '06 74 60 78 19',
-  phoneIntl: '+33674607819',
-  email: 'clotilde.marion24@gmail.com',
-  street: '72 boulevard Beausoleil',
-  postalCode: '24100',
-  city: 'Bergerac',
   region: 'Nouvelle-Aquitaine',
+  // téléphone, e-mail et adresse : src/content/settings/coordonnees.json (modifiable depuis /admin)
 };
 
 export type Lang = 'fr' | 'en';

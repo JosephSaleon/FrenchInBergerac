@@ -1,0 +1,30 @@
+{
+  "title": "Your homestay in Bergerac",
+  "lead": "A house with a small garden, a 5-minute walk from the town centre and 5 minutes by bike from Pombonne park. The railway stations are a 10-minute walk away, perfect for exploring the region.",
+  "photos": {
+    "salon": {
+      "caption": "Living room",
+      "alt": "The bright ground-floor living room"
+    },
+    "chambre": {
+      "caption": "Bedroom",
+      "alt": "A guest bedroom with a double bed"
+    },
+    "sde1": {
+      "caption": "Shower room",
+      "alt": "The shower room"
+    },
+    "sde2": {
+      "caption": "En-suite shower room",
+      "alt": "The en-suite shower room"
+    },
+    "jardin": {
+      "caption": "Garden",
+      "alt": "The garden with its wrought-iron table and chairs"
+    },
+    "velos": {
+      "caption": "Bicycles",
+      "alt": "Bicycles available in the garden"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kicker": "Cours de français · Bergerac · Dordogne",
+  "title": "Séjours linguistiques immersifs à Bergerac",
+  "lead": "Pour pratiquer et vivre le français dans une ambiance chaleureuse et détendue, immergé dans la culture du Périgord.",
+  "cta": "Demander un devis",
+  "ctaSecondary": "Découvrir le séjour",
+  "photoAlt": "Le vieux pont de Bergerac et les quais de la Dordogne au soleil couchant",
+  "facts": [
+    {
+      "value": "15 h",
+      "label": "de cours par semaine"
+    },
+    {
+      "value": "4 max",
+      "label": "élèves de même niveau"
+    },
+    {
+      "value": "5 min",
+      "label": "à pied du centre-ville"
+    }
+  ]
+}

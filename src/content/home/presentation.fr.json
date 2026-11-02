@@ -1,0 +1,22 @@
+{
+  "title": "Apprendre le français en immersion, en le vivant",
+  "p1": "Vous souhaitez pratiquer le français de façon intensive, avec à la fois des cours et une immersion dans la culture locale. Vous souhaitez être accompagné, mais appréciez aussi l’autonomie.",
+  "p2": "Bienvenue chez moi, au centre de Bergerac : cours de français le matin, et l’après-midi, cette ville d’art et d’histoire au bord de la Dordogne s’offre à vous — ses musées, ses artisans d’art, ses cafés, ses terrasses, ses restaurants et la nature toute proche.",
+  "day": {
+    "title": "Une journée type",
+    "items": [
+      {
+        "when": "Le matin",
+        "what": "Cours de français, en individuel ou en très petit groupe, à partir de vos objectifs et de vos centres d’intérêt."
+      },
+      {
+        "when": "L’après-midi",
+        "what": "Sorties accompagnées ou découverte en autonomie : musées, artisans d’art, marchés, bords de Dordogne."
+      },
+      {
+        "when": "Le soir",
+        "what": "Trois soirées conviviales dans la semaine : le meilleur moment pour parler sans y penser."
+      }
+    ]
+  }
+}

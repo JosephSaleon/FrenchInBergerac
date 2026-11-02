@@ -1,7 +1,7 @@
 import type { Lang } from './config';
 
 // Textes fixes de l'interface, en français et en anglais.
-// Les textes de la page d'accueil sont dans src/content/home/*.json (modifiables depuis /admin).
+// Les textes des pages, les coordonnées et le référencement sont dans src/content/ (modifiables depuis /admin).
 // Les clés sont identiques dans les deux langues : TypeScript signale toute traduction manquante.
 const fr = {
   langName: 'Français',
@@ -16,17 +16,11 @@ const fr = {
     contact: 'Contact',
   },
   meta: {
-    contactTitle: 'Contact et devis – Séjour linguistique et cours de français à Bergerac | French in Bergerac',
-    contactDescription:
-      'Contactez Clotilde pour organiser votre séjour linguistique à Bergerac : dates, niveau, devis personnalisé. Réponse rapide par e-mail ou téléphone.',
     thanksTitle: 'Message envoyé | French in Bergerac',
     ogAlt: 'Le vieux pont de Bergerac sur la Dordogne au coucher du soleil',
   },
   blog: {
     title: 'Le blog',
-    metaTitle: 'Blog – Apprendre le français et vivre à Bergerac | French in Bergerac',
-    metaDescription:
-      'Conseils pour apprendre le français, vie à Bergerac, culture de la Dordogne et du Périgord : les articles de Clotilde, professeure de français.',
     lead: 'Apprendre le français, vivre à Bergerac, découvrir le Périgord : mes articles.',
     empty: 'Les premiers articles arrivent bientôt.',
     readMore: 'Lire l’article',
@@ -35,8 +29,6 @@ const fr = {
     ctaButton: 'Me contacter',
   },
   contact: {
-    title: 'Contactez-moi',
-    lead: 'Pour toute question sur les séjours linguistiques ou pour recevoir un devis, écrivez-moi ou appelez-moi.',
     direct: 'Coordonnées',
     phone: 'Téléphone',
     email: 'E-mail',
@@ -89,17 +81,11 @@ const en: Dict = {
     contact: 'Contact',
   },
   meta: {
-    contactTitle: 'Contact & Quote – French Immersion Homestay in Bergerac | French in Bergerac',
-    contactDescription:
-      'Get in touch with Clotilde to plan your French immersion stay in Bergerac: dates, level and a tailored quote. Quick reply by email or phone.',
     thanksTitle: 'Message sent | French in Bergerac',
     ogAlt: 'The old bridge of Bergerac over the Dordogne river at sunset',
   },
   blog: {
     title: 'The blog',
-    metaTitle: 'Blog – Learning French and Life in Bergerac, France | French in Bergerac',
-    metaDescription:
-      'Tips for learning French, life in Bergerac, culture of the Dordogne and the Périgord: articles by Clotilde, French teacher in south-west France.',
     lead: 'Learning French, life in Bergerac, discovering the Périgord: my articles.',
     empty: 'The first articles are coming soon.',
     readMore: 'Read the article',
@@ -108,8 +94,6 @@ const en: Dict = {
     ctaButton: 'Get in touch',
   },
   contact: {
-    title: 'Get in touch',
-    lead: 'For any question about the immersion stays, or to receive a quote, write to me or give me a call.',
     direct: 'Contact details',
     phone: 'Phone',
     email: 'Email',

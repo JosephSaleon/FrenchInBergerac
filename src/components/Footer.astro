@@ -2,6 +2,7 @@
 import { SITE, ROUTES, type Lang } from '../config';
 import { t } from '../i18n';
 import { getPosts } from '../blog';
+import { CONTACT } from '../site-content';
 
 interface Props {
   lang: Lang;
@@ -20,10 +21,10 @@ const hasPosts = (await getPosts(lang)).length > 0;
       <p class="footer-tagline">{d.footer.tagline}</p>
     </div>
     <address>
-      {SITE.street}<br />
-      {SITE.postalCode} {SITE.city}, France<br />
-      <a href={`tel:${SITE.phoneIntl}`}>{SITE.phoneDisplay}</a><br />
-      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      {CONTACT.street}<br />
+      {CONTACT.postalCode} {CONTACT.city}, France<br />
+      <a href={`tel:${CONTACT.phoneIntl}`}>{CONTACT.phone}</a><br />
+      <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
     </address>
     <nav aria-label={lang === 'fr' ? 'Langues' : 'Languages'} class="footer-langs">
       <a href={ROUTES.home.fr} hreflang="fr" lang="fr" aria-current={lang === 'fr' ? 'true' : undefined}>Français</a>

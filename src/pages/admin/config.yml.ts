@@ -37,70 +37,142 @@ const stringList = (name: string, label: string, itemLabel: string): Field => ({
 const photo = (name: string, label: string) =>
   group(name, label, [str('caption', 'Légende'), str('alt', 'Description de la photo', 'Pour Google et les personnes malvoyantes')]);
 
-const homeFields: Field[] = [
-  group('seo', 'Référencement Google', [
-    str('title', 'Titre dans Google', 'Environ 60 caractères. Il contient les mots-clés principaux : à modifier avec prudence.'),
-    txt('description', 'Description dans Google', 'Environ 155 caractères : le texte affiché sous le titre dans les résultats.'),
-  ]),
-  group('hero', 'En-tête', [
-    str('kicker', 'Surtitre'),
-    str('title', 'Titre principal', 'Le titre le plus important pour Google.'),
-    txt('lead', 'Introduction'),
-    str('cta', 'Bouton principal'),
-    str('ctaSecondary', 'Bouton secondaire'),
-    str('photoAlt', 'Description de la photo'),
-    list('facts', 'Chiffres clés', [str('value', 'Chiffre'), str('label', 'Libellé')], { summary: '{{value}} {{label}}' }),
-  ]),
-  group('intro', 'Présentation', [str('title', 'Titre'), txt('p1', 'Paragraphe 1'), txt('p2', 'Paragraphe 2')]),
-  group('day', 'Journée type', [
-    str('title', 'Titre'),
-    list('items', 'Moments', [str('when', 'Moment'), txt('what', 'Description')], { summary: '{{when}}' }),
-  ]),
-  group('stay', 'Séjour et prix', [
-    str('title', 'Titre'),
-    txt('intro', 'Introduction'),
-    stringList('includes', 'Ce qui est inclus', 'Élément'),
-    { name: 'price', label: 'Prix (€)', widget: 'number', value_type: 'int', i18n: 'duplicate', hint: 'Pensez aussi à mettre à jour la FAQ et la description Google.' },
-    str('priceLabel', 'Texte avant le prix'),
-    str('pricePer', 'Texte après le prix'),
-    txt('priceNote', 'Note sous le prix'),
-    str('cta', 'Bouton'),
-  ]),
-  group('teacher', 'Votre professeure', [
-    str('kicker', 'Surtitre'),
-    str('title', 'Titre'),
-    stringList('badges', 'Badges', 'Badge'),
-    txt('p1', 'Paragraphe 1'),
-    txt('p2', 'Paragraphe 2'),
-    optional(txt('p3', 'Paragraphe 3')),
-    str('photoAlt', 'Description de la photo'),
-    optional(str('yogaTitle', 'Encadré yoga : titre')),
-    optional(txt('yoga', 'Encadré yoga : texte', 'Laisser vide pour masquer l’encadré.')),
-    optional(txt('yogaCredential', 'Encadré yoga : formation')),
-  ]),
-  group('house', 'La maison', [
-    str('title', 'Titre'),
-    txt('lead', 'Introduction'),
-    group('photos', 'Photos', [
-      photo('salon', 'Salon'),
-      photo('chambre', 'Chambre'),
-      photo('sde1', 'Salle d’eau'),
-      photo('sde2', 'Salle d’eau attenante'),
-      photo('jardin', 'Jardin'),
-      photo('velos', 'Vélos'),
-    ]),
-  ]),
-  group('region', 'La région', [str('title', 'Titre'), txt('p1', 'Paragraphe 1'), optional(txt('p2', 'Paragraphe 2')), str('photoAlt', 'Description de la photo')]),
-  group('reviews', 'Avis', [
-    str('title', 'Titre'),
-    list('items', 'Avis', [txt('text', 'Texte'), str('name', 'Prénom'), optional(str('from', 'Pays ou ville'))], { summary: '{{name}}' }),
-    optional(str('note', 'Note sous les avis')),
-  ]),
-  group('faq', 'Questions fréquentes', [
-    str('title', 'Titre'),
-    list('items', 'Questions', [str('question', 'Question'), txt('answer', 'Réponse')], { summary: '{{question}}' }),
-  ]),
-  group('cta', 'Appel à l’action (bas de page)', [str('title', 'Titre'), txt('text', 'Texte'), str('button', 'Bouton')]),
+// Page d'accueil : une fiche par section, dans l'ordre de la page (src/content/home/<section>.<langue>.json)
+const homeSections: { name: string; label: string; fields: Field[] }[] = [
+  {
+    name: 'hero',
+    label: '1. En-tête',
+    fields: [
+      str('kicker', 'Surtitre'),
+      str('title', 'Titre principal', 'Le titre le plus important pour Google.'),
+      txt('lead', 'Introduction'),
+      str('cta', 'Bouton principal'),
+      str('ctaSecondary', 'Bouton secondaire'),
+      str('photoAlt', 'Description de la photo', 'Pour Google et les personnes malvoyantes'),
+      list('facts', 'Chiffres clés', [str('value', 'Chiffre'), str('label', 'Libellé')], { summary: '{{value}} {{label}}' }),
+    ],
+  },
+  {
+    name: 'presentation',
+    label: '2. Présentation et journée type',
+    fields: [
+      str('title', 'Titre'),
+      txt('p1', 'Paragraphe 1'),
+      txt('p2', 'Paragraphe 2'),
+      group(
+        'day',
+        'Journée type',
+        [str('title', 'Titre'), list('items', 'Moments', [str('when', 'Moment'), txt('what', 'Description')], { summary: '{{when}}' })],
+        { collapsed: false },
+      ),
+    ],
+  },
+  {
+    name: 'stay',
+    label: '3. Le séjour et le prix',
+    fields: [
+      str('title', 'Titre'),
+      txt('intro', 'Introduction'),
+      stringList('includes', 'Ce qui est inclus', 'Élément'),
+      {
+        name: 'price',
+        label: 'Prix (€)',
+        widget: 'number',
+        value_type: 'int',
+        i18n: 'duplicate',
+        hint: 'Pensez aussi à mettre à jour la FAQ et la description Google (Réglages → Référencement Google).',
+      },
+      str('priceLabel', 'Texte avant le prix'),
+      str('pricePer', 'Texte après le prix'),
+      txt('priceNote', 'Note sous le prix'),
+      str('cta', 'Bouton'),
+    ],
+  },
+  {
+    name: 'teacher',
+    label: '4. Votre professeure',
+    fields: [
+      str('kicker', 'Surtitre'),
+      str('title', 'Titre'),
+      stringList('badges', 'Badges', 'Badge'),
+      txt('p1', 'Paragraphe 1'),
+      txt('p2', 'Paragraphe 2'),
+      optional(txt('p3', 'Paragraphe 3')),
+      str('photoAlt', 'Description de la photo', 'Pour Google et les personnes malvoyantes'),
+      optional(str('yogaTitle', 'Encadré yoga : titre')),
+      optional(txt('yoga', 'Encadré yoga : texte', 'Laisser vide pour masquer l’encadré.')),
+      optional(txt('yogaCredential', 'Encadré yoga : formation')),
+    ],
+  },
+  {
+    name: 'house',
+    label: '5. La maison',
+    fields: [
+      str('title', 'Titre'),
+      txt('lead', 'Introduction'),
+      group(
+        'photos',
+        'Photos',
+        [
+          photo('salon', 'Salon'),
+          photo('chambre', 'Chambre'),
+          photo('sde1', 'Salle d’eau'),
+          photo('sde2', 'Salle d’eau attenante'),
+          photo('jardin', 'Jardin'),
+          photo('velos', 'Vélos'),
+        ],
+        { collapsed: false },
+      ),
+    ],
+  },
+  {
+    name: 'region',
+    label: '6. La région',
+    fields: [str('title', 'Titre'), txt('p1', 'Paragraphe 1'), optional(txt('p2', 'Paragraphe 2')), str('photoAlt', 'Description de la photo')],
+  },
+  {
+    name: 'reviews',
+    label: '7. Avis',
+    fields: [
+      str('title', 'Titre'),
+      list('items', 'Avis', [txt('text', 'Texte'), str('name', 'Prénom'), optional(str('from', 'Pays ou ville'))], { summary: '{{name}}' }),
+      optional(str('note', 'Note sous les avis')),
+    ],
+  },
+  {
+    name: 'faq',
+    label: '8. Questions fréquentes',
+    fields: [
+      str('title', 'Titre'),
+      list('items', 'Questions', [str('question', 'Question'), txt('answer', 'Réponse')], { summary: '{{question}}' }),
+    ],
+  },
+  {
+    name: 'cta',
+    label: '9. Appel à l’action (bas de page)',
+    fields: [str('title', 'Titre'), txt('text', 'Texte'), str('button', 'Bouton')],
+  },
+];
+
+const seoPage = (name: string, label: string) =>
+  group(
+    name,
+    label,
+    [
+      str('title', 'Titre dans Google', 'Environ 60 caractères, avec les mots-clés principaux.'),
+      txt('description', 'Description dans Google', 'Environ 155 caractères : le texte affiché sous le titre dans les résultats.'),
+    ],
+    { collapsed: false },
+  );
+
+// Coordonnées : identiques dans les deux langues (pied de page, page contact, données pour Google)
+const plain = (name: string, label: string, extra: Field = {}): Field => ({ name, label, widget: 'string', ...extra });
+const coordinatesFields: Field[] = [
+  plain('phone', 'Téléphone', { hint: 'Format : 06 12 34 56 78', pattern: ['^0\\d( ?\\d{2}){4}$', 'Format attendu : 06 12 34 56 78'] }),
+  plain('email', 'E-mail'),
+  plain('street', 'Adresse (rue)'),
+  plain('postalCode', 'Code postal', { pattern: ['^\\d{5}$', '5 chiffres'] }),
+  plain('city', 'Ville'),
 ];
 
 const blogFields: Field[] = [
@@ -150,17 +222,51 @@ const config = {
       fields: blogFields,
     },
     {
-      name: 'pages',
-      label: 'Pages',
+      name: 'accueil',
+      label: 'Page d’accueil',
+      i18n: true,
+      files: homeSections.map(({ name, label, fields }) => ({
+        name,
+        label,
+        file: `src/content/home/${name}.{{locale}}.json`,
+        format: 'json',
+        i18n: true,
+        fields,
+      })),
+    },
+    {
+      name: 'contact',
+      label: 'Page contact',
       i18n: true,
       files: [
         {
-          name: 'home',
-          label: 'Page d’accueil',
-          file: 'src/content/home/home.{{locale}}.json',
+          name: 'contact',
+          label: 'Contact',
+          file: 'src/content/contact/contact.{{locale}}.json',
           format: 'json',
           i18n: true,
-          fields: homeFields,
+          fields: [str('title', 'Titre'), txt('lead', 'Introduction')],
+        },
+      ],
+    },
+    {
+      name: 'reglages',
+      label: 'Réglages',
+      files: [
+        {
+          name: 'coordonnees',
+          label: 'Coordonnées',
+          file: 'src/content/settings/coordonnees.json',
+          format: 'json',
+          fields: coordinatesFields,
+        },
+        {
+          name: 'seo',
+          label: 'Référencement Google',
+          file: 'src/content/settings/seo.{{locale}}.json',
+          format: 'json',
+          i18n: true,
+          fields: [seoPage('home', 'Page d’accueil'), seoPage('contact', 'Page contact'), seoPage('blog', 'Blog')],
         },
       ],
     },

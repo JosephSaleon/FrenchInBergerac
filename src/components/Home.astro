@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { SITE, ROUTES, type Lang } from '../config';
-import { getEntry } from 'astro:content';
+import { getHome, getSeo, CONTACT } from '../site-content';
 import Base from '../layouts/Base.astro';
 
 import pont from '../assets/vieux-pont-bergerac.jpg';
@@ -19,10 +19,9 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-// Textes modifiables depuis /admin : src/content/home/home.<langue>.json
-const entry = await getEntry('home', lang);
-if (!entry) throw new Error(`src/content/home/home.${lang}.json introuvable`);
-const d = entry.data;
+// Textes modifiables depuis /admin : src/content/home/<section>.<langue>.json
+const d = getHome(lang);
+const seo = getSeo(lang).home;
 const contactHref = ROUTES.contact[lang];
 const pageUrl = new URL(ROUTES.home[lang], SITE.url).href;
 const price = new Intl.NumberFormat(lang === 'fr' ? 'fr-FR' : 'en-GB', {
@@ -47,16 +46,16 @@ const jsonLd = [
     '@id': `${SITE.url}/#organisation`,
     name: SITE.name,
     url: pageUrl,
-    description: d.seo.description,
+    description: seo.description,
     image: new URL('/og-image.jpg', SITE.url).href,
-    telephone: SITE.phoneIntl,
-    email: SITE.email,
+    telephone: CONTACT.phoneIntl,
+    email: CONTACT.email,
     priceRange: '€€',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: SITE.street,
-      postalCode: SITE.postalCode,
-      addressLocality: SITE.city,
+      streetAddress: CONTACT.street,
+      postalCode: CONTACT.postalCode,
+      addressLocality: CONTACT.city,
       addressRegion: SITE.region,
       addressCountry: 'FR',
     },
@@ -92,7 +91,7 @@ const jsonLd = [
 ];
 ---
 
-<Base lang={lang} route="home" title={d.seo.title} description={d.seo.description} jsonLd={jsonLd}>
+<Base lang={lang} route="home" title={seo.title} description={seo.description} jsonLd={jsonLd}>
   <!-- HERO -->
   <section class="hero">
     <div class="wrap hero-grid">
@@ -127,14 +126,14 @@ const jsonLd = [
   <section class="section intro" aria-labelledby="intro-title">
     <div class="wrap intro-grid">
       <div class="prose">
-        <h2 id="intro-title">{d.intro.title}</h2>
-        <p class="dropcap">{d.intro.p1}</p>
-        <p>{d.intro.p2}</p>
+        <h2 id="intro-title">{d.presentation.title}</h2>
+        <p class="dropcap">{d.presentation.p1}</p>
+        <p>{d.presentation.p2}</p>
       </div>
       <div class="day">
-        <h3>{d.day.title}</h3>
+        <h3>{d.presentation.day.title}</h3>
         <ol class="timeline">
-          {d.day.items.map(({ when, what }) => (
+          {d.presentation.day.items.map(({ when, what }) => (
             <li><strong>{when}</strong><span>{what}</span></li>
           ))}
         </ol>

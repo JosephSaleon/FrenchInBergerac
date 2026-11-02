@@ -1,0 +1,30 @@
+{
+  "title": "Hébergé chez votre professeure, à Bergerac",
+  "lead": "Une maison avec jardinet, à 5 minutes à pied de l’hyper-centre et à 5 minutes à vélo du parc de Pombonne. Les gares sont à 10 minutes à pied pour rayonner dans la région.",
+  "photos": {
+    "salon": {
+      "caption": "Le salon",
+      "alt": "Le salon lumineux du rez-de-chaussée"
+    },
+    "chambre": {
+      "caption": "Une chambre",
+      "alt": "Une chambre d’hôte avec lit double"
+    },
+    "sde1": {
+      "caption": "La salle d’eau",
+      "alt": "La salle d’eau avec douche"
+    },
+    "sde2": {
+      "caption": "Salle d’eau attenante",
+      "alt": "La salle d’eau attenante à la chambre"
+    },
+    "jardin": {
+      "caption": "Le jardin",
+      "alt": "Le jardin avec sa table et ses chaises en fer forgé"
+    },
+    "velos": {
+      "caption": "Les vélos",
+      "alt": "Les vélos à disposition dans le jardin"
+    }
+  }
+}

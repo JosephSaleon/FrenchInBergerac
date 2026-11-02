@@ -17,12 +17,16 @@ npm run build:preview   # version non indexable dans dist-preview/
 
 | Fichier | Rôle |
 |---|---|
-| `src/content/home/home.fr.json`, `home.en.json` | **Textes de la page d'accueil** (et prix), modifiables depuis `/admin` |
+| `src/content/home/<section>.<langue>.json` | **Textes de la page d'accueil**, un fichier par section (en-tête, présentation, séjour et prix…) |
+| `src/content/contact/contact.<langue>.json` | Titre et introduction de la page contact |
+| `src/content/settings/coordonnees.json` | **Téléphone, e-mail, adresse** (pied de page, page contact, données pour Google) |
+| `src/content/settings/seo.<langue>.json` | Titres et descriptions Google de chaque page |
 | `src/content/blog/<article>/` | **Articles du blog** : `index.fr.md`, `index.en.md` (facultatif) et leurs photos |
-| `src/content.config.ts` | Schémas des contenus : une saisie invalide fait échouer le build (le site en ligne reste intact) |
+| `src/site-content.ts` | Charge et valide les fichiers ci-dessus : une saisie invalide fait échouer le build (le site en ligne reste intact) |
+| `src/content.config.ts` | Schéma des articles du blog |
 | `src/pages/admin/config.yml.ts` | Configuration de l'admin (champs proposés à l'édition), à garder cohérente avec les schémas |
 | `src/i18n.ts` | Textes fixes de l'interface (menu, formulaire, blog, pied de page) |
-| `src/config.ts` | Coordonnées, correspondance des URLs FR/EN |
+| `src/config.ts` | Nom du site, correspondance des URLs FR/EN |
 | `src/components/Home.astro` | Structure de la page d'accueil et données structurées (JSON-LD) |
 | `src/components/Blog*.astro`, `src/blog.ts` | Liste des articles et page d'article |
 | `src/components/Contact.astro` | Page contact et formulaire (Netlify Forms) |
@@ -77,7 +81,9 @@ En français, « séjour linguistique adulte » est surtout tapé par des Franç
 ## Espace d'administration (`/admin`)
 [Sveltia CMS](https://sveltiacms.app), sans base de données : chaque enregistrement crée un commit sur GitHub, et Netlify republie le site en une à deux minutes. Si une saisie est invalide, le build échoue et le site en ligne reste tel quel (*Deploys* sur Netlify pour voir l'erreur).
 
-- **Page d'accueil** : *Pages* → *Page d'accueil*, français et anglais côte à côte.
+- **Page d'accueil** : une fiche par section, dans l'ordre de la page (1. En-tête … 9. Appel à l'action), français et anglais côte à côte.
+- **Page contact** : titre et introduction.
+- **Réglages** → *Coordonnées* (téléphone, e-mail, adresse : modifiés partout d'un coup) et *Référencement Google* (titres et descriptions des pages dans Google, à modifier avec prudence).
 - **Blog** : *Blog* → *Nouvel article*. Un article est créé en français ; pour ajouter l'anglais, menu ⋮ de l'éditeur → activer *English*. Le lien « Blog » apparaît dans le menu dès le premier article publié. Case *Brouillon* : l'article est enregistré mais pas publié.
 - Les photos ajoutées dans un article sont rangées avec lui et optimisées automatiquement (WebP, plusieurs tailles). L'image de partage (réseaux sociaux) est générée à partir de la photo de couverture.
 
