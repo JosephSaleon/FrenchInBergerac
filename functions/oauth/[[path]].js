@@ -3,7 +3,9 @@
 // (https://github.com/sveltia/sveltia-cms-auth, licence MIT), adapté :
 // - routes préfixées par /oauth, puisque la fonction partage le domaine du site ;
 // - sans ALLOWED_DOMAINS, seul le domaine qui sert la fonction est accepté (l'admin et la
-//   fonction sont sur le même site, adresse provisoire comme vrai domaine).
+//   fonction sont sur le même site, adresse provisoire comme vrai domaine) ;
+// - redirect_uri envoyé à GitHub : l'application OAuth déclare une URL de retour par domaine
+//   (.pages.dev et frenchinbergerac.net), GitHub prendrait sinon toujours la première.
 // Variables à définir dans Cloudflare (Settings → Variables and Secrets) : GITHUB_CLIENT_ID et
 // GITHUB_CLIENT_SECRET, ceux de l'application OAuth GitHub dont l'URL de retour est
 // https://<domaine>/oauth/callback.
@@ -257,6 +259,13 @@ const requestToken = async (params, env) => {
 };
 
 /**
+ * URL de retour sur le domaine qui sert la fonction.
+ * @param {Request} request - HTTP request.
+ * @returns {string} URL.
+ */
+const callbackURL = (request) => `${new URL(request.url).origin}/oauth/callback`;
+
+/**
  * Handle the `auth` method, which is the first request in the authorization flow.
  * @param {Request} request - HTTP request.
  * @param {{ [key: string]: string }} env - Environment variables.
@@ -295,6 +304,7 @@ const handleAuth = async (request, env) => {
 
   const params = new URLSearchParams({
     client_id: GITHUB_CLIENT_ID,
+    redirect_uri: callbackURL(request),
     scope,
     state: csrfToken,
   });
@@ -339,7 +349,7 @@ const handleCallback = async (request, env) => {
     return outputError('MISCONFIGURED_CLIENT', env);
   }
 
-  const response = await requestToken({ code }, env);
+  const response = await requestToken({ code, redirect_uri: callbackURL(request) }, env);
 
   if (!response) {
     return outputError('TOKEN_REQUEST_FAILED', env);
