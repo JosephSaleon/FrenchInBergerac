@@ -8,11 +8,12 @@ export const SITE = {
 };
 
 // Formulaire de contact : service Web3Forms (gratuit jusqu'à 250 messages par mois), qui envoie
-// chaque demande par e-mail. La clé, créée sur web3forms.com avec l'adresse de réception, est
+// chaque demande par e-mail. La clé vient du compte web3forms.com ; l'adresse qui reçoit les
+// messages se choisit dans les réglages du formulaire (Settings > Recipient Emails). La clé est
 // publique par nature (elle ne permet que d'envoyer un message à cette adresse).
 export const CONTACT_FORM = {
   endpoint: 'https://api.web3forms.com/submit',
-  accessKey: '',
+  accessKey: '075d5ea9-3981-401d-82b9-58b71ed2170b',
 };
 
 export type Lang = 'fr' | 'en';
