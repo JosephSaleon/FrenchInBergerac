@@ -103,17 +103,17 @@ Sveltia est chargé depuis unpkg avec une version figée dans `public/admin/inde
 # Phase 1 – Mise en ligne sur Cloudflare Pages (aucun impact sur l'ancien site)
 
 1. **Cloudflare** (compte gratuit) → *Workers & Pages* → *Create* → onglet **Pages** → *Connect to Git* → GitHub → dépôt `FrenchInBergerac`.
-   - *Project name* : `french-in-bergerac` (adresse `https://french-in-bergerac.pages.dev`) ;
+   - *Project name* : `frenchinbergerac` (adresse `https://frenchinbergerac.pages.dev`) ;
    - *Framework preset* : Astro ; *Build command* : `npm run build` ; *Build output directory* : `dist` ; *Root directory* : vide.
 2. **GitHub** → *Settings* → *Developer settings* → *OAuth Apps* → l'application de l'admin (ou *New OAuth App*) :
-   - *Homepage URL* : `https://french-in-bergerac.pages.dev` ;
-   - *Authorization callback URL* : `https://french-in-bergerac.pages.dev/oauth/callback` ;
+   - *Homepage URL* : `https://frenchinbergerac.pages.dev` ;
+   - *Authorization callback URL* : `https://frenchinbergerac.pages.dev/oauth/callback` ;
    - *Generate a new client secret*.
 3. **Cloudflare** → projet → *Settings* → *Variables and Secrets* (production) : `GITHUB_CLIENT_ID` (texte) et `GITHUB_CLIENT_SECRET` (*Secret*), puis *Deployments* → *Retry deployment*.
 4. **Formulaire** : sur web3forms.com, saisir l'adresse de Clotilde → la clé reçue par e-mail va dans `CONTACT_FORM.accessKey` (`src/config.ts`).
 5. Vérifie :
    ```bash
-   bash tools/check-deploy.sh https://french-in-bergerac.pages.dev
+   bash tools/check-deploy.sh https://frenchinbergerac.pages.dev
    ```
    Tout doit être `OK`, dont « noindex (adresse d'aperçu) » et « Connexion de l'admin ». Teste aussi la connexion à `/admin/` et un envoi du formulaire.
 
