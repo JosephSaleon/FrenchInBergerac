@@ -10,7 +10,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const d = t(lang);
-if (!CONTACT_FORM.accessKey) console.warn('[contact] clé Web3Forms manquante (src/config.ts) : le formulaire ne peut pas envoyer');
+if (!CONTACT_FORM.accessKey) console.warn('[contact] clé Web3Forms manquante (src/config.ts) : lien e-mail affiché à la place du formulaire');
 // page de remerciement sur le vrai domaine ; le script ci-dessous la remplace par celle du domaine
 // courant, pour que le formulaire fonctionne aussi sur l'adresse provisoire
 const thanksUrl = new URL(ROUTES.thanks[lang], SITE.url).href;
@@ -39,43 +39,54 @@ const seo = getSeo(lang).contact;
       </div>
 
       <!-- Web3Forms (voir CONTACT_FORM dans src/config.ts) : la demande part par e-mail, puis le
-           visiteur est renvoyé sur la page de remerciement -->
-      <form class="contact-form" method="POST" action={CONTACT_FORM.endpoint}>
-        <input type="hidden" name="access_key" value={CONTACT_FORM.accessKey} />
-        <input type="hidden" name="subject" value={f.subject} />
-        <input type="hidden" name="from_name" value={SITE.name} />
-        <input type="hidden" name="redirect" value={thanksUrl} data-path={ROUTES.thanks[lang]} />
-        <input type="hidden" name="langue" value={lang} />
-        <label class="hp" aria-hidden="true">Ne pas remplir <input type="checkbox" name="botcheck" tabindex="-1" /></label>
-        <label>
-          <span>{f.name}</span>
-          <input type="text" name="name" autocomplete="given-name" />
-        </label>
-        <label>
-          <span>{f.email} <abbr title={f.required}>*</abbr></span>
-          <input type="email" name="email" autocomplete="email" required />
-        </label>
-        <div class="form-row">
+           visiteur est renvoyé sur la page de remerciement. Sans clé, un formulaire n'enverrait
+           rien : on affiche à la place un lien vers l'e-mail. -->
+      {CONTACT_FORM.accessKey ? (
+        <>
+        <form class="contact-form" method="POST" action={CONTACT_FORM.endpoint}>
+          <input type="hidden" name="access_key" value={CONTACT_FORM.accessKey} />
+          <input type="hidden" name="subject" value={f.subject} />
+          <input type="hidden" name="from_name" value={SITE.name} />
+          <input type="hidden" name="redirect" value={thanksUrl} data-path={ROUTES.thanks[lang]} />
+          <input type="hidden" name="langue" value={lang} />
+          <label class="hp" aria-hidden="true">Ne pas remplir <input type="checkbox" name="botcheck" tabindex="-1" /></label>
           <label>
-            <span>{f.dates}</span>
-            <input type="text" name="dates" placeholder={f.datesPlaceholder} />
+            <span>{f.name}</span>
+            <input type="text" name="name" autocomplete="given-name" />
           </label>
           <label>
-            <span>{f.level}</span>
-            <select name="level">
-              {f.levels.map((l) => <option>{l}</option>)}
-            </select>
+            <span>{f.email} <abbr title={f.required}>*</abbr></span>
+            <input type="email" name="email" autocomplete="email" required />
           </label>
+          <div class="form-row">
+            <label>
+              <span>{f.dates}</span>
+              <input type="text" name="dates" placeholder={f.datesPlaceholder} />
+            </label>
+            <label>
+              <span>{f.level}</span>
+              <select name="level">
+                {f.levels.map((l) => <option>{l}</option>)}
+              </select>
+            </label>
+          </div>
+          <label>
+            <span>{f.message} <abbr title={f.required}>*</abbr></span>
+            <textarea name="message" rows="6" required></textarea>
+          </label>
+          <button class="btn" type="submit">{f.submit}</button>
+        </form>
+        <script is:inline>
+          document.querySelectorAll('input[name="redirect"][data-path]').forEach((i) => (i.value = location.origin + i.dataset.path));
+        </script>
+        </>
+      ) : (
+        <div class="contact-form contact-fallback">
+          <p>{f.fallback}</p>
+          <p><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></p>
+          <a class="btn" href={`mailto:${CONTACT.email}?subject=${encodeURIComponent(f.subject)}`}>{f.fallbackButton}</a>
         </div>
-        <label>
-          <span>{f.message} <abbr title={f.required}>*</abbr></span>
-          <textarea name="message" rows="6" required></textarea>
-        </label>
-        <button class="btn" type="submit">{f.submit}</button>
-      </form>
-      <script is:inline>
-        document.querySelectorAll('input[name="redirect"][data-path]').forEach((i) => (i.value = location.origin + i.dataset.path));
-      </script>
+      )}
     </div>
   </section>
 </Base>

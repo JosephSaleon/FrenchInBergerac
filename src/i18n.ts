@@ -44,6 +44,9 @@ const fr = {
       submit: 'Envoyer ma demande',
       subject: 'Nouvelle demande depuis frenchinbergerac.net',
       required: 'obligatoire',
+      // tant que le formulaire n'est pas branché (clé Web3Forms absente)
+      fallback: 'Pour une demande de devis ou une question, écrivez-moi directement :',
+      fallbackButton: 'M’écrire un e-mail',
     },
   },
   thanks: {
@@ -109,6 +112,8 @@ const en: Dict = {
       submit: 'Send my request',
       subject: 'New enquiry from frenchinbergerac.net (EN)',
       required: 'required',
+      fallback: 'For a quote or any question, email me directly:',
+      fallbackButton: 'Send me an email',
     },
   },
   thanks: {
