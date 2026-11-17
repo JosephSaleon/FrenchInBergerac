@@ -10,8 +10,21 @@
   <body>
     <!-- Sveltia CMS (configuration : /admin/config.yml, générée par src/pages/admin/config.yml.ts).
          Version figée : pour mettre à jour, changer le numéro après vérification du changelog. -->
+    <script>
+      // Démarrage manuel : la connexion GitHub passe par la fonction /oauth du site qui sert
+      // l'admin (functions/oauth), qu'il s'agisse de l'adresse provisoire ou du vrai domaine
+      window.CMS_MANUAL_INIT = true;
+    </script>
     <script src="https://unpkg.com/@sveltia/cms@0.256.1/dist/sveltia-cms.js"></script>
     <!-- Aperçu de l'agencement de la galerie de la maison -->
     <script src="/admin/gallery-preview.js"></script>
+    <script>
+      fetch('/admin/config.yml')
+        .then((r) => r.json())
+        .then((config) => {
+          config.backend.base_url = `${location.origin}/oauth`;
+          window.CMS.init({ config: { ...config, load_config_file: false } });
+        });
+    </script>
   </body>
 </html>

@@ -255,7 +255,7 @@ const config = {
     name: 'github',
     repo: 'JosephSaleon/FrenchInBergerac',
     branch: 'main',
-    // Connexion par le fournisseur OAuth GitHub de Netlify (pas de base_url : c'est le défaut)
+    // base_url (connexion GitHub) : ajouté au démarrage par public/admin/index.html, selon le domaine
   },
   site_url: 'https://frenchinbergerac.net',
   // Même dossier que les photos des sections : « Ressources globales » et « Ressources du champ »

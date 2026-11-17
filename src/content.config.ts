@@ -1,7 +1,7 @@
 // Articles du blog, modifiables depuis /admin (Sveltia CMS, voir src/pages/admin/config.yml.ts).
 // Les textes des pages sont chargés par src/site-content.ts.
 // Les schémas valident les fichiers au build : une saisie invalide fait échouer le
-// déploiement Netlify, et la version en ligne reste alors inchangée.
+// déploiement (Cloudflare Pages), et la version en ligne reste alors inchangée.
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';

@@ -1,0 +1,13 @@
+# En-têtes Cloudflare Pages – French in Bergerac
+
+# Adresse provisoire (xxx.pages.dev) : jamais indexée, seul le vrai domaine doit l'être
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+# Fichiers de /_astro : nom unique à chaque build, on peut les garder 1 an en cache
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

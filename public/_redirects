@@ -1,11 +1,13 @@
-# Redirections Netlify (équivalent de public/.htaccess, qui ne sert que sur Apache/Hostinger)
+# Redirections Cloudflare Pages (équivalent de public/.htaccess, qui ne sert que sur Apache/Hostinger)
 
 # Anciennes pages du site Hostinger -> 301 (préserve le référencement)
-/sjours-linguistiques-immersifs--bergerac-pour-apprendre-le-franais-efficacement  /  301!
-/sjours-linguistiques--bergerac--immersion-dans-la-culture-franaise               /  301!
-/accueil       /                    301!
-/sitemap.xml   /sitemap-index.xml   301!
+/sjours-linguistiques-immersifs--bergerac-pour-apprendre-le-franais-efficacement  /  301
+/sjours-linguistiques--bergerac--immersion-dans-la-culture-franaise               /  301
+/accueil       /                    301
+/sjours-linguistiques-immersifs--bergerac-pour-apprendre-le-franais-efficacement/  /  301
+/sjours-linguistiques--bergerac--immersion-dans-la-culture-franaise/               /  301
+/accueil/      /                    301
+/sitemap.xml   /sitemap-index.xml   301
 
-# Pas de règle /contact/ -> /contact : Netlify applique une règle avec ou sans slash final,
-# elle s'appliquerait donc aussi à /contact et bouclerait. Netlify gère lui-même le slash final,
-# et l'URL canonique indique à Google l'adresse officielle.
+# Pas de règle pour le slash final : Cloudflare sert /contact, /en/ et /blog/ et redirige
+# lui-même les variantes (/contact/, /en, /blog). L'URL canonique indique l'adresse officielle.

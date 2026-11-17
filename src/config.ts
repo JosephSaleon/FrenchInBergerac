@@ -7,6 +7,14 @@ export const SITE = {
   // téléphone, e-mail et adresse : src/content/settings/coordonnees.json (modifiable depuis /admin)
 };
 
+// Formulaire de contact : service Web3Forms (gratuit jusqu'à 250 messages par mois), qui envoie
+// chaque demande par e-mail. La clé, créée sur web3forms.com avec l'adresse de réception, est
+// publique par nature (elle ne permet que d'envoyer un message à cette adresse).
+export const CONTACT_FORM = {
+  endpoint: 'https://api.web3forms.com/submit',
+  accessKey: '',
+};
+
 export type Lang = 'fr' | 'en';
 
 // Correspondance des pages entre les deux langues (pour hreflang et le sélecteur de langue)

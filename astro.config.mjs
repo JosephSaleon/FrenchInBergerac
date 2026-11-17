@@ -6,17 +6,11 @@ import { readdirSync, readFileSync, existsSync } from 'node:fs';
 const SITE = 'https://frenchinbergerac.net';
 
 // Le site ne doit être indexé QUE lorsqu'il est servi sur son vrai domaine.
-// - `npm run build:preview` (mode preview) : noindex
-// - sur Netlify : noindex pour les aperçus de branche/PR, et tant que le domaine
-//   frenchinbergerac.net n'est pas le domaine principal du site (adresse en .netlify.app).
-//   Netlify fournit CONTEXT et URL pendant le build.
+// - `npm run build:preview` (mode preview) : noindex dans les pages
+// - sur Cloudflare Pages, les adresses en .pages.dev reçoivent un en-tête X-Robots-Tag: noindex
+//   (public/_headers) : le même build sert ainsi l'adresse provisoire et le vrai domaine.
 const argv = process.argv.join(' ');
-const previewMode = /--mode[ =]preview/.test(argv);
-const onNetlify = process.env.NETLIFY === 'true';
-const netlifyNotLive =
-  onNetlify &&
-  (process.env.CONTEXT !== 'production' || !/^https:\/\/(www\.)?frenchinbergerac\.net/.test(process.env.URL ?? ''));
-const NOINDEX = previewMode || netlifyNotLive;
+const NOINDEX = /--mode[ =]preview/.test(argv);
 if (NOINDEX) console.log('[seo] Build NON indexable (noindex sur toutes les pages)');
 
 // Langues ayant au moins un article publié : un index de blog vide n'est pas indexé
@@ -33,7 +27,7 @@ export default defineConfig({
   site: SITE,
   // URLs sans .html : /contact comme sur l'ancien site. Les index de dossier (en/index.html,
   // blog/index.html) sont servis avec un slash final (/en/, /blog/) : un fichier en.html à côté
-  // d'un dossier en/ faisait boucler les redirections sur Netlify.
+  // d'un dossier en/ faisait boucler les redirections sur Netlify (ancien hébergeur).
   trailingSlash: 'ignore',
   build: { format: 'preserve' },
   vite: { define: { __NOINDEX__: JSON.stringify(NOINDEX) } },

@@ -1,6 +1,6 @@
 # French in Bergerac – site bilingue FR/EN
 
-Site statique généré avec [Astro](https://astro.build) et hébergé sur **Netlify**. Il n'y a aucun framework côté client : HTML pur, images WebP responsives, polices auto-hébergées.
+Site statique généré avec [Astro](https://astro.build) et hébergé sur **Cloudflare Pages** (offre gratuite : 500 publications par mois, trafic illimité). Il n'y a aucun framework côté client : HTML pur, images WebP responsives, polices auto-hébergées.
 Lighthouse mobile : Performance 99–100, SEO 100, Accessibilité 100, Bonnes pratiques 100.
 
 ## Commandes
@@ -30,13 +30,15 @@ npm run build:preview   # version non indexable dans dist-preview/
 | `src/config.ts` | Nom du site, correspondance des URLs FR/EN |
 | `src/components/Home.astro` | Structure de la page d'accueil et données structurées (JSON-LD) |
 | `src/components/Blog*.astro`, `src/blog.ts` | Liste des articles et page d'article |
-| `src/components/Contact.astro` | Page contact et formulaire (Netlify Forms) |
+| `src/components/Contact.astro` | Page contact et formulaire (Web3Forms, clé dans `src/config.ts`) |
 | `src/styles/global.css` | Design (couleurs en variables en haut du fichier) |
 | `src/assets/` | Photos sources (redimensionnées et converties automatiquement au build) |
 | `astro.config.mjs` | Configuration, dont la **règle d'indexation automatique** (voir plus bas) |
-| `netlify.toml` | Build Netlify et en-têtes de cache |
-| `public/_redirects` | Redirections 301 sur Netlify |
-| `public/.htaccess` | Mêmes redirections pour Apache (inutile sur Netlify, gardé en solution de repli) |
+| `public/_headers` | En-têtes Cloudflare : cache, sécurité, noindex de l'adresse `.pages.dev` |
+| `public/_redirects` | Redirections 301 sur Cloudflare |
+| `functions/oauth/` | Connexion GitHub de l'admin (fonction Cloudflare, reprise de *sveltia-cms-auth*) |
+| `.node-version` | Version de Node utilisée par le build Cloudflare |
+| `public/.htaccess` | Mêmes redirections pour Apache (inutile sur Cloudflare, gardé en solution de repli) |
 | `tools/check-deploy.sh` | Vérifie les URLs, les redirections et l'indexation une fois en ligne |
 | `tools/make-icons.mjs` | Régénère l'image de partage `og-image.jpg` et les icônes |
 
@@ -57,17 +59,14 @@ npm run build:preview   # version non indexable dans dist-preview/
 ## Indexation automatique (garde-fou SEO)
 Le site n'est indexable **que lorsqu'il est servi sur frenchinbergerac.net**. Concrètement :
 
-| Build | Indexable ? |
+| Adresse | Indexable ? |
 |---|---|
-| Netlify, adresse `xxx.netlify.app` | non (noindex sur toutes les pages) |
-| Netlify, aperçu de branche ou de PR | non |
-| Netlify, domaine principal = frenchinbergerac.net | **oui** |
-| `npm run build` en local | oui |
-| `npm run build:preview` | non |
+| Cloudflare, adresse provisoire `xxx.pages.dev` | non (en-tête `X-Robots-Tag: noindex`, voir `public/_headers`) |
+| Cloudflare, aperçus de branche | non (noindex ajouté par Cloudflare) |
+| Cloudflare, frenchinbergerac.net | **oui** |
+| `npm run build:preview` | non (noindex dans les pages) |
 
-Ainsi, l'adresse `.netlify.app` montrée à la cliente ne fait pas de concurrence à l'ancien site dans Google. Le jour où le domaine est branché, il suffit de **relancer un déploiement** pour que le site devienne indexable.
-
-> ⚠️ Ne pas glisser un `dist/` construit en local sur Netlify Drop : il serait indexable sur l'adresse `.netlify.app`. Utilise Git (recommandé) ou `dist-preview/`.
+Le même build sert l'adresse provisoire et le vrai domaine : c'est l'en-tête, posé selon l'adresse, qui empêche l'indexation de `.pages.dev`. Rien à relancer le jour de la bascule.
 
 ## Mots-clés ciblés
 Ils viennent de l'autocomplétion Google (UK et US pour l'anglais, France pour le français), c'est-à-dire de ce que les gens tapent réellement.
@@ -80,7 +79,7 @@ Ils viennent de l'autocomplétion Google (UK et US pour l'anglais, France pour l
 En français, « séjour linguistique adulte » est surtout tapé par des Français qui partent à l'étranger. C'est pour ça que la version FR vise aussi « cours de français (FLE) » et « pour étrangers ».
 
 ## Espace d'administration (`/admin`)
-[Sveltia CMS](https://sveltiacms.app), sans base de données : chaque enregistrement crée un commit sur GitHub, et Netlify republie le site en une à deux minutes. Si une saisie est invalide, le build échoue et le site en ligne reste tel quel (*Deploys* sur Netlify pour voir l'erreur).
+[Sveltia CMS](https://sveltiacms.app), sans base de données : chaque enregistrement crée un commit sur GitHub, et Cloudflare republie le site en une à deux minutes. Si une saisie est invalide, le build échoue et le site en ligne reste tel quel (Cloudflare → projet → *Deployments* pour voir l'erreur).
 
 - **Page d'accueil** : une fiche par section, dans l'ordre de la page (1. En-tête … 9. Appel à l'action), français et anglais côte à côte.
 - **Photos des sections** (en-tête, professeure, région) : dans la fiche de la section, *Remplacer* sous la photo → *Téléverser* (ou choisir une photo déjà en ligne). La photo est convertie en WebP et réduite à 2400 px côté navigateur, rangée dans `src/assets/`, puis déclinée en plusieurs tailles au build. Elle vaut pour les deux langues ; penser à mettre à jour la *Description de la photo* en français et en anglais. Les anciennes photos restent dans `src/assets/` (rubrique « Ressources » de l'admin) et peuvent y être supprimées.
@@ -93,39 +92,30 @@ En français, « séjour linguistique adulte » est surtout tapé par des Franç
 - **Blog** : *Blog* → *Nouvel article*. Un article est créé en français ; pour ajouter l'anglais, menu ⋮ de l'éditeur → activer *English*. Le lien « Blog » apparaît dans le menu dès le premier article publié. Case *Brouillon* : l'article est enregistré mais pas publié.
 - Les photos ajoutées dans un article sont rangées avec lui et optimisées automatiquement (WebP, plusieurs tailles). L'image de partage (réseaux sociaux) est générée à partir de la photo de couverture.
 
-**Mise en place, une seule fois**
-1. **GitHub** → *Settings* → *Developer settings* → *OAuth Apps* → *New OAuth App* :
-   - *Homepage URL* : l'adresse du site sur Netlify ;
-   - *Authorization callback URL* : `https://api.netlify.com/auth/done`.
-   Note le *Client ID* et génère un *Client secret*.
-2. **Netlify** → *Project configuration* → *Access & security* → **OAuth** (pas *Identity*) → *Install provider* → *GitHub* : colle le *Client ID* et le *Client secret*.
-3. **Accès de Clotilde** : elle crée un compte GitHub gratuit ; sur le dépôt → *Settings* → *Collaborators* → *Add people* (droit d'écriture). Elle accepte l'invitation reçue par e-mail.
-4. Connexion : `https://<site>/admin/` → *Se connecter avec GitHub*.
+**Connexion** : l'admin démarre manuellement (`public/admin/index.html`) et passe par la fonction `/oauth` du domaine qui le sert (`functions/oauth/`). Il faut une application OAuth GitHub dont l'URL de retour est `https://<domaine>/oauth/callback` (un seul domaine par application : à changer le jour de la bascule) et, dans Cloudflare, les variables `GITHUB_CLIENT_ID` et `GITHUB_CLIENT_SECRET`.
 
-Après la bascule du domaine, l'admin est à `https://frenchinbergerac.net/admin/`, sans autre réglage.
+**Accès de Clotilde** : compte GitHub, ajoutée au dépôt (*Settings* → *Collaborators*, droit d'écriture). Le dépôt est public : sur un dépôt privé, l'ancien hébergeur (Netlify gratuit) refusait les commits d'un deuxième contributeur.
 
 Sveltia est chargé depuis unpkg avec une version figée dans `public/admin/index.html` : la mettre à jour de temps en temps, après lecture du changelog.
 
 ---
 
-# Phase 1 – Mise en ligne sur Netlify pour validation (aucun impact sur l'ancien site)
+# Phase 1 – Mise en ligne sur Cloudflare Pages (aucun impact sur l'ancien site)
 
-1. **Dépôt GitHub privé** : crée un dépôt vide (sans README), puis dans `site/` :
-   ```bash
-   git remote add origin https://github.com/JosephSaleon/FrenchInBergerac.git
-   git push -u origin main
-   ```
-2. **Netlify** → *Add new project* → *Import an existing project* → GitHub → choisis le dépôt. Les réglages sont lus depuis `netlify.toml` : build `npm run build`, dossier `dist`.
-3. *Project configuration* → *Change project name* : par exemple `french-in-bergerac`, ce qui donne l'adresse `https://french-in-bergerac.netlify.app`.
-4. **Formulaire** : *Forms* → *Enable form detection*, puis relance un déploiement (*Deploys* → *Trigger deploy*). Dans *Forms* → *Form notifications* → *Email notification*, mets l'adresse de Clotilde.
+1. **Cloudflare** (compte gratuit) → *Workers & Pages* → *Create* → onglet **Pages** → *Connect to Git* → GitHub → dépôt `FrenchInBergerac`.
+   - *Project name* : `french-in-bergerac` (adresse `https://french-in-bergerac.pages.dev`) ;
+   - *Framework preset* : Astro ; *Build command* : `npm run build` ; *Build output directory* : `dist` ; *Root directory* : vide.
+2. **GitHub** → *Settings* → *Developer settings* → *OAuth Apps* → l'application de l'admin (ou *New OAuth App*) :
+   - *Homepage URL* : `https://french-in-bergerac.pages.dev` ;
+   - *Authorization callback URL* : `https://french-in-bergerac.pages.dev/oauth/callback` ;
+   - *Generate a new client secret*.
+3. **Cloudflare** → projet → *Settings* → *Variables and Secrets* (production) : `GITHUB_CLIENT_ID` (texte) et `GITHUB_CLIENT_SECRET` (*Secret*), puis *Deployments* → *Retry deployment*.
+4. **Formulaire** : sur web3forms.com, saisir l'adresse de Clotilde → la clé reçue par e-mail va dans `CONTACT_FORM.accessKey` (`src/config.ts`).
 5. Vérifie :
    ```bash
-   bash tools/check-deploy.sh https://french-in-bergerac.netlify.app
+   bash tools/check-deploy.sh https://french-in-bergerac.pages.dev
    ```
-   Tout doit être `OK`, dont la ligne « noindex (adresse d'aperçu) ».
-6. Envoie le lien à la cliente.
-
-**Retouches** : chaque `git push` redéploie automatiquement en une à deux minutes. Pour lui montrer une variante sans toucher à la version validée, pousse une branche : Netlify crée une adresse d'aperçu dédiée (*branch deploy*), elle aussi non indexable.
+   Tout doit être `OK`, dont « noindex (adresse d'aperçu) » et « Connexion de l'admin ». Teste aussi la connexion à `/admin/` et un envoi du formulaire.
 
 # Phase 2 – Bascule du domaine (sans perte de référencement)
 
@@ -135,10 +125,10 @@ Sveltia est chargé depuis unpkg avec une version figée dans `public/admin/inde
 3. Dans *Pages*, note les URLs indexées. S'il en existe d'autres que celles du tableau des URLs, ajoute-les en 301 dans `public/_redirects`.
 
 **Le jour J** (environ 30 minutes, sans coupure)
-1. Netlify → *Domain management* → *Add a domain* → `frenchinbergerac.net`. Mets-le en **domaine principal** et ajoute `www` en alias.
-2. Chez Hostinger → *DNS* du domaine : remplace les enregistrements `A` de `@` par celui qu'indique Netlify (son load balancer), et fais pointer le `CNAME` de `www` vers `french-in-bergerac.netlify.app`. Ne touche à rien d'autre.
-3. Attends que Netlify affiche le certificat HTTPS comme actif (quelques minutes à quelques heures).
-4. **Netlify → *Deploys* → *Trigger deploy* → *Clear cache and deploy site*.** ⚠️ Cette étape est indispensable : c'est elle qui retire le noindex.
+1. **Cloudflare** → *Add a domain* → `frenchinbergerac.net` → offre *Free*. Cloudflare recopie la zone DNS actuelle : vérifie que les enregistrements `MX` (e-mails) et `TXT` sont bien là avant de continuer.
+2. **Hostinger** → domaine → *Serveurs DNS* : remplace-les par les deux serveurs indiqués par Cloudflare. Attends que Cloudflare affiche le domaine *Active* (quelques minutes à quelques heures).
+3. **Cloudflare** → projet Pages → *Custom domains* : ajoute `frenchinbergerac.net` puis `www.frenchinbergerac.net`. Puis *Rules* → *Redirect Rules* → modèle « Redirect from WWW to root » (301), pour que `www` renvoie vers le domaine sans `www`.
+4. **GitHub** → application OAuth de l'admin : *Homepage URL* `https://frenchinbergerac.net` et *Authorization callback URL* `https://frenchinbergerac.net/oauth/callback`. L'admin passe alors sur `https://frenchinbergerac.net/admin/` (l'adresse `.pages.dev` ne peut plus s'y connecter).
 5. Vérifie :
    ```bash
    bash tools/check-deploy.sh
@@ -155,5 +145,5 @@ Sveltia est chargé depuis unpkg avec une version figée dans `public/admin/inde
 
 ## À valider avec la cliente
 - Les textes de la page d'accueil (modifiables depuis `/admin`), en particulier la mention « pour adultes », la FAQ et la version anglaise (idéalement relue par une personne anglophone).
-- Les mentions légales : obligatoires pour un site professionnel en France (nom, statut, SIRET, hébergeur Netlify). Il faut une page dédiée.
+- Les mentions légales : obligatoires pour un site professionnel en France (nom, statut, SIRET, hébergeur Cloudflare). Il faut une page dédiée.
 - Des photos en haute définition si possible, surtout pour la grande photo d'accueil, aujourd'hui en 868 px de large.

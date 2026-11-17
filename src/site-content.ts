@@ -1,6 +1,6 @@
 // Textes modifiables depuis /admin (Sveltia CMS, voir src/pages/admin/config.yml.ts) :
 // un fichier JSON par section et par langue. Chaque fichier est validé au build : une saisie
-// invalide fait échouer le déploiement Netlify, et la version en ligne reste alors inchangée.
+// invalide fait échouer le déploiement (Cloudflare Pages), et la version en ligne reste alors inchangée.
 import { z } from 'astro/zod';
 import type { ImageMetadata } from 'astro';
 import type { Lang } from './config';
