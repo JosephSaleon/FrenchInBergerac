@@ -1,5 +1,5 @@
 ---
-title: A typical day
+title: A Day of French Immersion in Bergerac
 description: Here’s an example of what your stay might look like. I can adapt the lessons, activities and timings to suit your interests and pace.
 date: 2026-11-22T13:54:00
 cover: /src/assets/_mg_2818.webp
@@ -7,9 +7,7 @@ coverAlt: ''
 draft: false
 ---
 
-# A Day of French Immersion in Bergerac
-
-At 8.30 am, we have breakfast together. You tell me what you discovered the day before, what surprised or puzzled you, and what you’d like to see in the afternoon.
+**At 8.30 am**, we have breakfast together. You tell me what you discovered the day before, what surprised or puzzled you, and what you’d like to see in the afternoon.
 
 At 9 am, we start with a few gentle yoga stretches. It’s a chance to wake up your body and ease into the day before we begin your one-to-one French lesson, which runs until midday.
 
