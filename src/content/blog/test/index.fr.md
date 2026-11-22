@@ -1,6 +1,6 @@
 ---
 title: Une journée-type
-description: Un exemple de programme type mais adaptable.
+description: Voici un exemple de ce à quoi pourrait ressembler votre séjour. Mais j'adapte les cours, les activités et les horaires à vos centres d’intérêt et à votre rythme.
 date: 2026-11-22T13:54:00
 cover: /src/assets/_mg_2818.webp
 coverAlt: Le salon, qui peut devenir salle de cours
